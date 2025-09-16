@@ -1,5 +1,9 @@
 package com.quynhtien.cineasy.controller;
 
+import com.quynhtien.cineasy.dto.request.UserCreationRequest;
+import com.quynhtien.cineasy.dto.request.UserUpdateRequest;
+import com.quynhtien.cineasy.dto.response.ApiResponse;
+import com.quynhtien.cineasy.dto.response.UserResponse;
 import com.quynhtien.cineasy.entity.User;
 import com.quynhtien.cineasy.service.UserService;
 import lombok.AccessLevel;
@@ -18,33 +22,43 @@ public class UserController {
 
     //Get all users
     @GetMapping
-    public List<User> findAll() {
-        return userService.getUsers();
+    public ApiResponse<List<UserResponse>> findAll() {
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getUsers())
+                .build();
     }
 
     //Get user by id
     @GetMapping("/{id}")
-    public User findUserById(@PathVariable String id) {
-        return userService.getUser(id);
+    public ApiResponse<UserResponse> findUserById(@PathVariable String id) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getUser(id))
+                .build();
     }
 
     //Create user
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ApiResponse<UserResponse> createUser(@RequestBody UserCreationRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.createUser(request))
+                .build();
     }
 
     //Update user
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable String id, @RequestBody User user) {
-        return userService.updateUser(user);
+    public ApiResponse<UserResponse> updateUser(@PathVariable String id, @RequestBody UserUpdateRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.updateUser(id, request))
+                .build();
     }
 
     //Delete user
     @DeleteMapping("/{id}")
-    public User deleteUser(@PathVariable String id, @RequestBody User user) {
+    public ApiResponse<String> deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
-        return null;
+        return ApiResponse.<String>builder()
+                .result(userService.deleteUser(id))
+                .build();
     }
 
 }

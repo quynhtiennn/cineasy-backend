@@ -1,27 +1,19 @@
-package com.quynhtien.cineasy.entity;
+package com.quynhtien.cineasy.dto.response;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+@Builder
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+public class UserResponse {
     String id;
-
     String username;
     String password;
     String email;
     String firstName;
     String lastName;
-
-
 }
