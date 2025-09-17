@@ -1,0 +1,20 @@
+package com.quynhtien.cineasy.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.*;
+
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class LoggedOutToken {
+    @Id
+    @Column(unique = true, nullable = false)
+    String tokenId;
+
+    String expirationTime;
+}

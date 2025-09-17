@@ -7,17 +7,16 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.quynhtien.cineasy.dto.request.AuthenticationIntrospectRequest;
-import com.quynhtien.cineasy.dto.request.AuthenticationLoginRequest;
-import com.quynhtien.cineasy.dto.request.UserCreationRequest;
-import com.quynhtien.cineasy.dto.request.UserUpdateRequest;
-import com.quynhtien.cineasy.dto.response.AuthenticationIntrospectResponse;
-import com.quynhtien.cineasy.dto.response.AuthenticationLoginResponse;
-import com.quynhtien.cineasy.dto.response.UserResponse;
+import com.quynhtien.cineasy.dto.request.TokenRequest;
+import com.quynhtien.cineasy.dto.request.AuthenticationRequest;
+import com.quynhtien.cineasy.dto.request.RefreshTokenRequest;
+import com.quynhtien.cineasy.dto.response.IntrospectResponse;
+import com.quynhtien.cineasy.dto.response.AuthenticationResponse;
+import com.quynhtien.cineasy.entity.LoggedOutToken;
 import com.quynhtien.cineasy.entity.User;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
-import com.quynhtien.cineasy.mapper.UserMapper;
+import com.quynhtien.cineasy.repository.LoggedOutTokenRepository;
 import com.quynhtien.cineasy.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +27,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -41,11 +40,20 @@ public class AuthenticationService {
     @Value("${jwt.secretKey}")
     protected String SECRET_KEY;
 
+    @NonFinal
+    @Value("${jwt.durationMs}")
+    protected Long DURATION_MS;
+
+    @NonFinal
+    @Value("${jwt.refreshDurationMs}")
+    protected Long REFRESH_DURATION_MS;
+
     PasswordEncoder passwordEncoder;
     UserRepository userRepository;
+    LoggedOutTokenRepository loggedOutTokenRepository;
 
     //login
-    public AuthenticationLoginResponse login(AuthenticationLoginRequest request) {
+    public AuthenticationResponse login(AuthenticationRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
@@ -53,41 +61,119 @@ public class AuthenticationService {
         if (!authenticated) {
             throw new AppException(ErrorCode.INVALID_USER_INFO);
         }
+        log.info("ok1");
 
         String token = generateToken(user);
-
-        return AuthenticationLoginResponse.builder()
+log.info("ok");
+        return AuthenticationResponse.builder()
                 .token(token)
                 .build();
     }
 
     //introspect token
-    public AuthenticationIntrospectResponse introspectToken(AuthenticationIntrospectRequest request) {
-        boolean valid = verifyToken(request.getToken()) != null;
-        return AuthenticationIntrospectResponse.builder()
+    public IntrospectResponse introspectToken(TokenRequest request) {
+        verifyToken(request.getToken(), false);
+        boolean valid = true;
+        return IntrospectResponse.builder()
                     .valid(valid)
                     .build();
     }
 
-    private SignedJWT verifyToken(String token) {
+    //log out token
+    public String logout(TokenRequest request) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(request.getToken());
+            JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
+
+            boolean valid = signedJWT.verify(verifier);
+
+            Date refreshableTime = new Date(signedJWT.getJWTClaimsSet().getIssueTime().getTime()
+                    + REFRESH_DURATION_MS);
+            if (valid && new Date().before(refreshableTime)) {
+                String jti = signedJWT.getJWTClaimsSet().getJWTID();
+                if (loggedOutTokenRepository.existsById(jti)) {
+                    return "Already logged out successfully";
+                } else {
+                    //save jti to db
+                    LoggedOutToken loggedOutToken = LoggedOutToken.builder()
+                            .tokenId(jti)
+                            .expirationTime(refreshableTime.toString())
+                            .build();
+                    loggedOutTokenRepository.save(loggedOutToken);
+                    return "Log out successfully";
+                }
+            } else {
+                throw new AppException(ErrorCode.INVALID_TOKEN);
+            }
+        } catch (Exception e) {
+            log.error("Error while logging out: {}", e.getMessage());
+            throw new AppException(ErrorCode.INVALID_TOKEN);
+        }
+    }
+
+    //refresh token
+    public AuthenticationResponse refreshToken(TokenRequest request) {
+        SignedJWT signedJWT = verifyToken(request.getToken(), true);
+        try {
+            String username = signedJWT.getJWTClaimsSet().getSubject();
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+            String newToken = generateToken(user);
+            return AuthenticationResponse.builder()
+                    .token(newToken)
+                    .build();
+        } catch (ParseException e) {
+            log.error("Error while parsing token: {}", e.getMessage());
+            throw new AppException(ErrorCode.INVALID_TOKEN);
+        }
+    }
+
+    private SignedJWT verifyToken(String token, boolean isRefresh) {
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
             JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
-            if (signedJWT.verify(verifier)){
+            Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+            Date refreshableTime = new Date(signedJWT.getJWTClaimsSet().getIssueTime().getTime()
+                    + REFRESH_DURATION_MS);
+
+            boolean valid = signedJWT.verify(verifier);
+
+            //not refresh
+            if (!isRefresh) {
+                if (valid && new Date().before(expirationTime) ){
+                    return signedJWT;
+                } else {
+                    throw new AppException(ErrorCode.INVALID_TOKEN);
+                }
+            }
+
+            //refresh token
+            if (valid && new Date().before(refreshableTime )) {
+                //check if jti is in logged out db
+                String jti = signedJWT.getJWTClaimsSet().getJWTID();
+                if (loggedOutTokenRepository.existsById(jti)) {
+                    throw new AppException(ErrorCode.INVALID_TOKEN);
+                }
                 return signedJWT;
             } else {
                 throw new AppException(ErrorCode.INVALID_TOKEN);
             }
+
         } catch (Exception e) {
             log.error("Error while verifying token: {}", e.getMessage());
             throw new AppException(ErrorCode.INVALID_TOKEN);
         }
     }
 
+
+
     private String generateToken(User user) {
         String token;
+        log.info("ok2");
+
         //header
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
+        log.info("ok3");
 
         //claimset/payload
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -95,13 +181,16 @@ public class AuthenticationService {
                 .jwtID(UUID.randomUUID().toString())
                 .issuer("quynhtien")
                 .issueTime(new Date())
-                .expirationTime(new Date(new Date().getTime() + 1000 * 60 * 60)) //1 hour
+                .expirationTime(new Date(new Date().getTime() + DURATION_MS)) //1 hour
                 .claim("userId", user.getId())
                 .claim("scope", "USER")
                 .build();
+        log.info("ok4");
 
         //jwt
         SignedJWT signedJWT = new SignedJWT(header, claimsSet);
+        log.info("ok5");
+
         //sign
         try {
             signedJWT.sign(new MACSigner(SECRET_KEY)); //32 chars

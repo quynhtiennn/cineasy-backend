@@ -1,13 +1,11 @@
 package com.quynhtien.cineasy.controller;
 
-import com.quynhtien.cineasy.dto.request.AuthenticationIntrospectRequest;
-import com.quynhtien.cineasy.dto.request.AuthenticationLoginRequest;
+import com.quynhtien.cineasy.dto.request.TokenRequest;
+import com.quynhtien.cineasy.dto.request.AuthenticationRequest;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
-import com.quynhtien.cineasy.dto.response.AuthenticationIntrospectResponse;
-import com.quynhtien.cineasy.dto.response.AuthenticationLoginResponse;
-import com.quynhtien.cineasy.entity.User;
+import com.quynhtien.cineasy.dto.response.IntrospectResponse;
+import com.quynhtien.cineasy.dto.response.AuthenticationResponse;
 import com.quynhtien.cineasy.service.AuthenticationService;
-import com.quynhtien.cineasy.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,16 +22,30 @@ public class AuthenticationController {
     AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ApiResponse<AuthenticationLoginResponse> login(@RequestBody AuthenticationLoginRequest request) {
-        return ApiResponse.<AuthenticationLoginResponse>builder()
+    public ApiResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
+        return ApiResponse.<AuthenticationResponse>builder()
                 .result(authenticationService.login(request))
                 .build();
     }
 
     @PostMapping("/introspect")
-    public ApiResponse<AuthenticationIntrospectResponse> login(@RequestBody AuthenticationIntrospectRequest request) {
-        return ApiResponse.<AuthenticationIntrospectResponse>builder()
+    public ApiResponse<IntrospectResponse> introspect(@RequestBody TokenRequest request) {
+        return ApiResponse.<IntrospectResponse>builder()
                 .result(authenticationService.introspectToken(request))
+                .build();
+    }
+
+    @PostMapping("/logout")
+    public ApiResponse<String> logout(@RequestBody TokenRequest request) {
+        return ApiResponse.<String>builder()
+                .result(authenticationService.logout(request))
+                .build();
+    }
+
+    @PostMapping("/refresh")
+    public ApiResponse<AuthenticationResponse> refresh(@RequestBody TokenRequest request) {
+        return ApiResponse.<AuthenticationResponse>builder()
+                .result(authenticationService.refreshToken(request))
                 .build();
     }
 }
