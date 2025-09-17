@@ -11,10 +11,13 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum ErrorCode {
-    USER_NOT_FOUND(1001, "User not found", HttpStatus.BAD_REQUEST),
-    USERNAME_ALREADY_EXISTS(1002, "Username already exists", HttpStatus.BAD_REQUEST),
-    INVALID_REQUEST(1003, "Invalid request", HttpStatus.BAD_REQUEST),
-    INTERNAL_SERVER_ERROR(1004, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+    //generic error codes 1001 - 1999
+    INTERNAL_SERVER_ERROR(1001, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
+    //user error codes 2001 - 2999
+    USER_NOT_FOUND(2001, "User not found", HttpStatus.BAD_REQUEST),
+    USERNAME_ALREADY_EXISTS(2002, "Username already exists", HttpStatus.BAD_REQUEST),
+    INVALID_REQUEST(2003, "Invalid request", HttpStatus.BAD_REQUEST);
+
 
     int code;
     String message;
