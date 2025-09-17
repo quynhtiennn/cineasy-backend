@@ -3,8 +3,11 @@ package com.quynhtien.cineasy.exception;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.Objects;
 
 @Slf4j
 @ControllerAdvice
@@ -27,5 +30,15 @@ public class GlobalExceptionHandler {
                 .message(ex.getErrorCode().getMessage())
                 .build();
         return ResponseEntity.status(ex.getErrorCode().getHttpStatusCode()).body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ResponseEntity<ApiResponse> handleAppException(MethodArgumentNotValidException ex) {
+        ErrorCode errorCode = ErrorCode.INVALID_REQUEST;
+        ApiResponse response = ApiResponse.builder()
+                .code(errorCode.getCode())
+                .message(Objects.requireNonNull(ex.getFieldError()).getDefaultMessage())
+                .build();
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
     }
 }
