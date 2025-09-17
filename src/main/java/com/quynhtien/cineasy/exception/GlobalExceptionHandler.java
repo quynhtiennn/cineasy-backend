@@ -2,6 +2,7 @@ package com.quynhtien.cineasy.exception;
 
 import com.quynhtien.cineasy.dto.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,6 +39,16 @@ public class GlobalExceptionHandler {
         ApiResponse response = ApiResponse.builder()
                 .code(errorCode.getCode())
                 .message(Objects.requireNonNull(ex.getFieldError()).getDefaultMessage())
+                .build();
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    ResponseEntity<ApiResponse> handleAppException(DataIntegrityViolationException ex) {
+        ErrorCode errorCode = ErrorCode.INVALID_REQUEST;
+        ApiResponse response = ApiResponse.builder()
+                .code(errorCode.getCode())
+                .message("Data Exception: " + ex.getMostSpecificCause().getMessage())
                 .build();
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
     }
