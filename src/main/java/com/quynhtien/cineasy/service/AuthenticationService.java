@@ -61,10 +61,8 @@ public class AuthenticationService {
         if (!authenticated) {
             throw new AppException(ErrorCode.INVALID_USER_INFO);
         }
-        log.info("ok1");
 
         String token = generateToken(user);
-log.info("ok");
         return AuthenticationResponse.builder()
                 .token(token)
                 .build();
@@ -169,11 +167,9 @@ log.info("ok");
 
     private String generateToken(User user) {
         String token;
-        log.info("ok2");
 
         //header
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
-        log.info("ok3");
 
         //claimset/payload
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -183,13 +179,11 @@ log.info("ok");
                 .issueTime(new Date())
                 .expirationTime(new Date(new Date().getTime() + DURATION_MS)) //1 hour
                 .claim("userId", user.getId())
-                .claim("scope", "USER")
+                .claim("scope", buildScope(user))
                 .build();
-        log.info("ok4");
 
         //jwt
         SignedJWT signedJWT = new SignedJWT(header, claimsSet);
-        log.info("ok5");
 
         //sign
         try {
@@ -200,6 +194,15 @@ log.info("ok");
             log.error("Error while generating token: {}", e.getMessage());
             throw new AppException(ErrorCode.GENERATE_TOKEN_ERROR);
         }
+    }
 
+    private String buildScope(User user) {
+        StringBuilder scope = new StringBuilder();
+        user.getRoles().forEach(role -> {
+            scope.append("ROLE_").append(role.getName()).append(" ");
+            role.getPermissions().forEach(permission ->
+                    scope.append(permission.getName()).append(" "));
+        });
+        return scope.toString().trim();
     }
 }
