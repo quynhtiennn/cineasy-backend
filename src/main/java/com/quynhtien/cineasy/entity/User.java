@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,5 +34,7 @@ public class User {
     @Column(nullable = false)
     String lastName;
 
+    @ManyToMany
+    Set<Role> roles;
 
 }

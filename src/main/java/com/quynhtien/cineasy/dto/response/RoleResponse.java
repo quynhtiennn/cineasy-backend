@@ -1,6 +1,6 @@
 package com.quynhtien.cineasy.dto.response;
 
-import com.quynhtien.cineasy.entity.Role;
+import com.quynhtien.cineasy.entity.Permission;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,12 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
-    String id;
-    String username;
-    String email;
-    String firstName;
-    String lastName;
-
-    Set<Role> roles;
+public class RoleResponse {
+    String name;
+    String description;
+    Set<Permission> permissions;
 }

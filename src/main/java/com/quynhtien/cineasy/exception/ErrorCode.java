@@ -21,7 +21,13 @@ public enum ErrorCode {
 
     //authentication error codes 3001 - 3999
     GENERATE_TOKEN_ERROR(3001, "Error generating token", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_TOKEN(3002, "Invalid token", HttpStatus.UNAUTHORIZED);
+    INVALID_TOKEN(3002, "Invalid token", HttpStatus.UNAUTHORIZED),
+
+    //role error codes 4001 - 4999
+    ROLE_NOT_FOUND(4001, "Role not found", HttpStatus.BAD_REQUEST),
+
+    //permission error codes 5001 - 5999
+    PERMISSION_NOT_FOUND(5001, "Permission not found", HttpStatus.BAD_REQUEST);
 
 
     int code;

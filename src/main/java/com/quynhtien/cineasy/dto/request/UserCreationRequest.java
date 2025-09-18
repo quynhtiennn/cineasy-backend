@@ -2,9 +2,12 @@ package com.quynhtien.cineasy.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
 
 @Builder
 @Getter
@@ -30,5 +33,8 @@ public class UserCreationRequest {
 
     @NotBlank(message = "Last name cannot be blank")
     String lastName;
+
+    @NotEmpty(message = "Roles cannot be empty")
+    Set<String> roles;
 
 }

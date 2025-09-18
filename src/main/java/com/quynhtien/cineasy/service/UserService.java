@@ -3,10 +3,12 @@ package com.quynhtien.cineasy.service;
 import com.quynhtien.cineasy.dto.request.UserCreationRequest;
 import com.quynhtien.cineasy.dto.request.UserUpdateRequest;
 import com.quynhtien.cineasy.dto.response.UserResponse;
+import com.quynhtien.cineasy.entity.Role;
 import com.quynhtien.cineasy.entity.User;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.UserMapper;
+import com.quynhtien.cineasy.repository.RoleRepository;
 import com.quynhtien.cineasy.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +28,7 @@ public class UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    RoleRepository roleRepository;
 
     //Get all users
     public List<UserResponse> getUsers() {
@@ -46,6 +50,10 @@ public class UserService {
         //encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        //manually map roles
+        List<Role> roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
+
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
@@ -57,6 +65,10 @@ public class UserService {
 
         //encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        //manually map roles
+        List<Role> roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
 
         userMapper.updateUser(request, user);
         userRepository.save(user);
