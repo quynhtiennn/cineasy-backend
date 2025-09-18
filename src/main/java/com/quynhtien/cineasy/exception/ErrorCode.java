@@ -22,6 +22,8 @@ public enum ErrorCode {
     //authentication error codes 3001 - 3999
     GENERATE_TOKEN_ERROR(3001, "Error generating token", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_TOKEN(3002, "Invalid token", HttpStatus.UNAUTHORIZED),
+    UNAUTHENTICATED(3003, "Unauthenticated request", HttpStatus.UNAUTHORIZED),
+    UNAUTHORISED(3004, "Unauthorised request", HttpStatus.FORBIDDEN),
 
     //role error codes 4001 - 4999
     ROLE_NOT_FOUND(4001, "Role not found", HttpStatus.BAD_REQUEST),

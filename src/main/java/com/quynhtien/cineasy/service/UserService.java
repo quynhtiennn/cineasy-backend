@@ -14,6 +14,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,9 @@ public class UserService {
 
     //Get all users
     public List<UserResponse> getUsers() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Get users request by: {}", auth.getAuthorities());
+
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse).toList();
     }
@@ -80,6 +85,7 @@ public class UserService {
         if (!userRepository.existsById(id)) {
             throw new AppException(ErrorCode.USER_NOT_FOUND);
         }
+
         userRepository.deleteById(id);
         return "Delete user successfully";
     }

@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class UserController {
     UserService userService;
 
     //Get all users
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ApiResponse<List<UserResponse>> findAll() {
         return ApiResponse.<List<UserResponse>>builder()
@@ -30,6 +32,7 @@ public class UserController {
     }
 
     //Get user by id
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ApiResponse<UserResponse> findUserById(@PathVariable String id) {
         return ApiResponse.<UserResponse>builder()
@@ -46,6 +49,7 @@ public class UserController {
     }
 
     //Update user
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.claims['userId']")
     @PutMapping("/{id}")
     public ApiResponse<UserResponse> updateUser(@PathVariable String id, @RequestBody @Valid UserUpdateRequest request) {
         return ApiResponse.<UserResponse>builder()
@@ -54,9 +58,9 @@ public class UserController {
     }
 
     //Delete user
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.claims['userId'] or hasAuthority('DELETE_USER')")
     @DeleteMapping("/{id}")
     public ApiResponse<String> deleteUser(@PathVariable String id) {
-        userService.deleteUser(id);
         return ApiResponse.<String>builder()
                 .result(userService.deleteUser(id))
                 .build();

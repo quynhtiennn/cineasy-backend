@@ -126,7 +126,7 @@ public class AuthenticationService {
         }
     }
 
-    private SignedJWT verifyToken(String token, boolean isRefresh) {
+    public SignedJWT verifyToken(String token, boolean isRefresh) {
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
             JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
