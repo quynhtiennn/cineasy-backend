@@ -1,13 +1,11 @@
 package com.quynhtien.cineasy.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -16,21 +14,24 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 @Entity
-public class Movie {
+public class CinemaHall {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(unique = true, nullable = false)
-    String title;
+    String name;
 
-    String description;
-    String genre;
-    int duration; // minutes
-    LocalDate releaseDate;
 
-//    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
-//    private List<Showtime> showtimes;
+    int totalSeats;
+
+    /*@OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
+    private List<Seat> seats;
+
+    @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
+    private List<Showtime> showtimes;*/
+
+
 
 
 }

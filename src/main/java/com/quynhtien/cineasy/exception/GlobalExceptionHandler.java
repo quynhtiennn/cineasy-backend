@@ -1,6 +1,8 @@
 package com.quynhtien.cineasy.exception;
 
 import com.quynhtien.cineasy.dto.response.ApiResponse;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -73,6 +75,26 @@ public class GlobalExceptionHandler {
         ApiResponse response = ApiResponse.builder()
                 .code(errorCode.getCode())
                 .message("Parse Exception: " + errorCode.getMessage())
+                .build();
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    ResponseEntity<ApiResponse> handleAppException(ConstraintViolationException ex) {
+        ErrorCode errorCode = ErrorCode.INVALID_REQUEST;
+
+        // get the first violation
+        String errorMessage = ex.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .findFirst()
+                .orElse("Validation failed");
+
+        log.error("Constraint Violation Exception: {}", errorMessage);
+
+        ApiResponse response = ApiResponse.builder()
+                .code(errorCode.getCode())
+                .message("Constraint Violation Exception: " + errorMessage)
                 .build();
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
     }

@@ -33,7 +33,10 @@ public enum ErrorCode {
     PERMISSION_NOT_FOUND(5001, "Permission not found", HttpStatus.BAD_REQUEST),
 
     //movie error codes 6001 - 6999
-    MOVIE_NOT_FOUND(6001, "Movie not found", HttpStatus.BAD_REQUEST);
+    MOVIE_NOT_FOUND(6001, "Movie not found", HttpStatus.BAD_REQUEST),
+
+    //cinema hall error codes 7001 - 7999
+    CINEMA_HALL_NOT_FOUND(7001, "Cinema hall not found", HttpStatus.BAD_REQUEST);
 
 
     int code;
