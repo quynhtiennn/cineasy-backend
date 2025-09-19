@@ -4,6 +4,7 @@ import com.quynhtien.cineasy.dto.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -47,9 +48,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<ApiResponse> handleAppException(DataIntegrityViolationException ex) {
         ErrorCode errorCode = ErrorCode.INVALID_REQUEST;
+        log.error("Data Exception: " ,ex.getMostSpecificCause().getMessage());
         ApiResponse response = ApiResponse.builder()
                 .code(errorCode.getCode())
-                .message("Data Exception: " + ex.getMostSpecificCause().getMessage())
+                .message("Data Exception: " + errorCode.getMessage())
                 .build();
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
     }
@@ -60,6 +62,17 @@ public class GlobalExceptionHandler {
         ApiResponse response = ApiResponse.builder()
                 .code(errorCode.getCode())
                 .message(errorCode.getMessage())
+                .build();
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    ResponseEntity<ApiResponse> handleAppException(HttpMessageNotReadableException ex) {
+        ErrorCode errorCode = ErrorCode.PARSE_INFO_ERROR;
+        log.error("Parse Exception: " + ex.getMostSpecificCause().getMessage());
+        ApiResponse response = ApiResponse.builder()
+                .code(errorCode.getCode())
+                .message("Parse Exception: " + errorCode.getMessage())
                 .build();
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
     }
