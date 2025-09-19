@@ -82,13 +82,14 @@ public class AuthenticationService {
         try {
             SignedJWT signedJWT = SignedJWT.parse(request.getToken());
             JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
-
             boolean valid = signedJWT.verify(verifier);
 
             Date refreshableTime = new Date(signedJWT.getJWTClaimsSet().getIssueTime().getTime()
                     + REFRESH_DURATION_MS);
+
             if (valid && new Date().before(refreshableTime)) {
                 String jti = signedJWT.getJWTClaimsSet().getJWTID();
+
                 if (loggedOutTokenRepository.existsById(jti)) {
                     return "Already logged out successfully";
                 } else {

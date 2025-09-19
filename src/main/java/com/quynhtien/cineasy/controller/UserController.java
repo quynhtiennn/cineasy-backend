@@ -4,7 +4,6 @@ import com.quynhtien.cineasy.dto.request.UserCreationRequest;
 import com.quynhtien.cineasy.dto.request.UserUpdateRequest;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
 import com.quynhtien.cineasy.dto.response.UserResponse;
-import com.quynhtien.cineasy.entity.User;
 import com.quynhtien.cineasy.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
