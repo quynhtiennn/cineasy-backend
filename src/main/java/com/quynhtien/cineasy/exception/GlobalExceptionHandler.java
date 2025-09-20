@@ -98,4 +98,15 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<ApiResponse> handleAppException(IllegalArgumentException ex) {
+        ErrorCode errorCode = ErrorCode.INVALID_REQUEST;
+        log.error("Exception: " + ex.getMessage());
+        ApiResponse response = ApiResponse.builder()
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .build();
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
+    }
 }

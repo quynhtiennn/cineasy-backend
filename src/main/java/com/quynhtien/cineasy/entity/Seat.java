@@ -1,12 +1,9 @@
 package com.quynhtien.cineasy.entity;
 
+import com.quynhtien.cineasy.enums.SeatType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -15,22 +12,22 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 @Entity
-public class CinemaHall {
+public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     String name;
 
+    SeatType seatType;
 
-    int totalSeats;
 
-//    @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
-//    private List<Seat> seats;
+    /*@OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
+    private List<Seat> seats;
 
-/*    @OneToMany
-    List<ShowTime> showTimes;*/
+    @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
+    private List<Showtime> showtimes;*/
 
 
 
