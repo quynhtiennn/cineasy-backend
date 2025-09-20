@@ -1,12 +1,9 @@
 package com.quynhtien.cineasy.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @Builder
 @Getter
@@ -14,10 +11,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CinemaHallRequest {
+public class AuditoriumRequest {
     @NotBlank(message = "Name is required")
     String name;
 
-    @Positive(message = "Total seats must be a positive number")
-    int totalSeats; // minutes
+    @Positive(message = "Rows must be a positive number")
+    int totalRows;
+
+    @Positive(message = "Seats per row must be a positive number")
+    int seatsPerRow;
 }

@@ -1,5 +1,6 @@
 package com.quynhtien.cineasy.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.quynhtien.cineasy.enums.SeatType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,19 +18,13 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(unique = true)
-    String name;
+    String rowLabel;
+    int seatNumber;
 
     SeatType seatType;
 
-
-    /*@OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
-    private List<Seat> seats;
-
-    @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
-    private List<Showtime> showtimes;*/
-
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "auditorium_id")
+    @JsonBackReference
+    Auditorium auditorium;
 }

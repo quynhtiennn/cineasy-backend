@@ -24,7 +24,7 @@ public class ShowTime {
     Movie movie;
 
     @ManyToOne
-    CinemaHall hall;
+    Auditorium hall;
 
     @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
     List<Ticket> tickets;*/

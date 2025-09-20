@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String id;  // Safer to expose in APIs
+    String id;
 
     LocalDateTime bookingTime;
     double totalPrice;
