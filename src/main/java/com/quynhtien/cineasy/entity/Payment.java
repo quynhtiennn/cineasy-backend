@@ -1,11 +1,10 @@
 package com.quynhtien.cineasy.entity;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,20 +13,20 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 @Entity
-public class User {
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    @Column(unique = true, nullable = false)
-    String username;
+    String method; // CREDIT_CARD, PAYPAL, MOMO
+    double amount;
+    LocalDateTime paymentDate;
+    String status; // PENDING, SUCCESS, FAILED, REFUNDED
 
-    String password;
-    String email;
-    String firstName;
-    String lastName;
+    /*@OneToOne
+    Booking booking;*/
 
-    @ManyToMany
-    Set<Role> roles;
+
+
 
 }

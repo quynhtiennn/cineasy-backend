@@ -1,5 +1,6 @@
-package com.quynhtien.cineasy.dto.response;
+package com.quynhtien.cineasy.dto.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,8 +10,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionResponse {
-    String name;
-    String description;
+public class TicketRequest {
+    @NotNull
+    boolean available;
 
 }

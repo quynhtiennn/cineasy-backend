@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatusCode;
 public enum ErrorCode {
     //generic error codes 1001 - 1999
     INTERNAL_SERVER_ERROR(1001, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
+    PARSE_INFO_ERROR(1002, "Cannot parse the information", HttpStatus.BAD_REQUEST),
 
     //user error codes 2001 - 2999
     USER_NOT_FOUND(2001, "User not found", HttpStatus.BAD_REQUEST),
@@ -29,7 +30,23 @@ public enum ErrorCode {
     ROLE_NOT_FOUND(4001, "Role not found", HttpStatus.BAD_REQUEST),
 
     //permission error codes 5001 - 5999
-    PERMISSION_NOT_FOUND(5001, "Permission not found", HttpStatus.BAD_REQUEST);
+    PERMISSION_NOT_FOUND(5001, "Permission not found", HttpStatus.BAD_REQUEST),
+
+    //movie error codes 6001 - 6999
+    MOVIE_NOT_FOUND(6001, "Movie not found", HttpStatus.BAD_REQUEST),
+
+    //auditorium error codes 7001 - 7999
+    AUDITORIUM_NOT_FOUND(7001, "Cinema hall not found", HttpStatus.BAD_REQUEST),
+
+    //seat error codes 8001 - 8999
+    SEAT_NOT_FOUND(8001, "Seat not found", HttpStatus.BAD_REQUEST),
+
+    //showtime error codes 9001 - 9999
+    SHOWTIME_NOT_FOUND(9001, "Show time not found", HttpStatus.BAD_REQUEST),
+
+    //ticket error codes 10001 - 10999
+    TICKET_NOT_FOUND(10001, "Ticket not found", HttpStatus.BAD_REQUEST);
+
 
 
     int code;
