@@ -1,11 +1,13 @@
 package com.quynhtien.cineasy.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -31,6 +33,7 @@ public class ShowTime {
     @JsonBackReference
     Auditorium auditorium;
 
-    /*@OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
-    List<Ticket> tickets;*/
+    @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    Set<Ticket> tickets;
 }

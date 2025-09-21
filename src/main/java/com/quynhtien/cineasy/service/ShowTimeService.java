@@ -5,18 +5,21 @@ import com.quynhtien.cineasy.dto.response.ShowTimeResponse;
 import com.quynhtien.cineasy.entity.Auditorium;
 import com.quynhtien.cineasy.entity.Movie;
 import com.quynhtien.cineasy.entity.ShowTime;
+import com.quynhtien.cineasy.entity.Ticket;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.ShowTimeMapper;
 import com.quynhtien.cineasy.repository.AuditoriumRepository;
 import com.quynhtien.cineasy.repository.MovieRepository;
 import com.quynhtien.cineasy.repository.ShowTimeRepository;
+import com.quynhtien.cineasy.repository.TicketRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Slf4j
@@ -28,6 +31,7 @@ public class ShowTimeService {
     ShowTimeMapper showTimeMapper;
     MovieRepository movieRepository;
     AuditoriumRepository auditoriumRepository;
+    TicketRepository ticketRepository;
 
     //Get all showTimes
     public List<ShowTimeResponse> getShowTimes() {
@@ -52,6 +56,15 @@ public class ShowTimeService {
         Auditorium auditorium = auditoriumRepository.findById(request.getAuditoriumId())
                         .orElseThrow(()-> new AppException(ErrorCode.AUDITORIUM_NOT_FOUND));
         showTime.setAuditorium(auditorium);
+
+        List<Ticket> tickets = auditorium.getSeats().stream()
+                .map(seat -> Ticket.builder()
+                        .price(seat.getSeatType().getPrice())
+                        .available(true)
+                        .seat(seat)
+                        .showTime(showTime) // link back
+                        .build()).toList();
+        showTime.setTickets(new HashSet<>(tickets));
 
         showTimeRepository.save(showTime);
         return showTimeMapper.toShowTimeResponse(showTime);

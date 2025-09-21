@@ -42,7 +42,11 @@ public enum ErrorCode {
     SEAT_NOT_FOUND(8001, "Seat not found", HttpStatus.BAD_REQUEST),
 
     //showtime error codes 9001 - 9999
-    SHOWTIME_NOT_FOUND(9001, "Show time not found", HttpStatus.BAD_REQUEST);
+    SHOWTIME_NOT_FOUND(9001, "Show time not found", HttpStatus.BAD_REQUEST),
+
+    //ticket error codes 10001 - 10999
+    TICKET_NOT_FOUND(10001, "Ticket not found", HttpStatus.BAD_REQUEST);
+
 
 
     int code;

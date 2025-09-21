@@ -21,6 +21,7 @@ public interface ShowTimeMapper {
                 .movieTitle(showTime.getMovie().getTitle())
                 .auditoriumId(showTime.getAuditorium().getId())
                 .auditoriumName(showTime.getAuditorium().getName())
+                .tickets(showTime.getTickets())
                 .build();
     }
 

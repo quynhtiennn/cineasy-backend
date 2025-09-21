@@ -1,9 +1,8 @@
 package com.quynhtien.cineasy.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -21,15 +20,19 @@ public class Ticket {
     Long id;
 
     double price;
-    boolean booked;
+    boolean available;
 
     /*@ManyToOne
-    Booking booking;
+    Booking booking;*/
 
     @ManyToOne
-    Showtime showtime;
+    @JoinColumn(name = "show_time_id")
+    @JsonBackReference
+    ShowTime showTime;
 
     @ManyToOne
-    Seat seat;*/
+    @JoinColumn(name = "seat_id")
+    @JsonManagedReference
+    Seat seat;
 
 }
