@@ -36,11 +36,7 @@ public class SeatService {
     public SeatResponse getSeat(Long id) {
         Seat seat = seatRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.SEAT_NOT_FOUND));
-        SeatResponse response = seatMapper.toSeatResponse(seat);
-        Auditorium auditorium = seat.getAuditorium();
-        response.setAuditoriumId(auditorium.getId());
-        response.setAuditoriumName(auditorium.getName());
-        return response;
+        return seatMapper.toSeatResponse(seat);
     }
 
     //Create seat

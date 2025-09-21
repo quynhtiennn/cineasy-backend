@@ -18,5 +18,6 @@ import java.util.List;
 public class ShowTimeResponse {
     Long id;
     LocalDateTime startTime;
-    Movie movie;
+    Long movieId;
+    String movieTitle;
 }

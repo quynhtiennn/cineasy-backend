@@ -39,7 +39,10 @@ public enum ErrorCode {
     AUDITORIUM_NOT_FOUND(7001, "Cinema hall not found", HttpStatus.BAD_REQUEST),
 
     //seat error codes 8001 - 8999
-    SEAT_NOT_FOUND(8001, "Seat not found", HttpStatus.BAD_REQUEST);
+    SEAT_NOT_FOUND(8001, "Seat not found", HttpStatus.BAD_REQUEST),
+
+    //showtime error codes 9001 - 9999
+    SHOWTIME_NOT_FOUND(9001, "Show time not found", HttpStatus.BAD_REQUEST);
 
 
     int code;
