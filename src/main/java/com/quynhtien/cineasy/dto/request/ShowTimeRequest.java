@@ -1,6 +1,5 @@
 package com.quynhtien.cineasy.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
@@ -20,4 +19,7 @@ public class ShowTimeRequest {
 
     @Positive(message = "Movie ID must be positive")
     Long movieId;
+
+    @Positive(message = "Auditorium ID must be positive")
+    Long auditoriumId;
 }

@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -28,10 +29,11 @@ public class Auditorium {
 
     @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
     @JsonManagedReference
-    List<Seat> seats;
+    Set<Seat> seats;
 
+    @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    Set<ShowTime> showTimes;
 
-/*    @OneToMany
-    List<ShowTime> showTimes;*/
 
 }

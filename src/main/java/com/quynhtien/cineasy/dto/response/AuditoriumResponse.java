@@ -1,6 +1,7 @@
 package com.quynhtien.cineasy.dto.response;
 
 import com.quynhtien.cineasy.entity.Seat;
+import com.quynhtien.cineasy.entity.ShowTime;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,4 +19,5 @@ public class AuditoriumResponse {
     int totalRows;
     int seatsPerRow;
     List<Seat> seats;
+    List<ShowTime> showTimes;
 }

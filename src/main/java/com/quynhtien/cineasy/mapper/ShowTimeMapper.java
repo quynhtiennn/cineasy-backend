@@ -10,6 +10,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface ShowTimeMapper {
     @Mapping(target = "movie", ignore = true)
+    @Mapping(target = "auditorium", ignore = true)
     ShowTime toShowTime(ShowTimeRequest request);
 
     default ShowTimeResponse toShowTimeResponse(ShowTime showTime){
@@ -18,10 +19,13 @@ public interface ShowTimeMapper {
                 .startTime(showTime.getStartTime())
                 .movieId(showTime.getMovie().getId())
                 .movieTitle(showTime.getMovie().getTitle())
+                .auditoriumId(showTime.getAuditorium().getId())
+                .auditoriumName(showTime.getAuditorium().getName())
                 .build();
     }
 
     @Mapping(target = "movie", ignore = true)
+    @Mapping(target = "auditorium", ignore = true)
     void updateShowTime(ShowTimeRequest request, @MappingTarget ShowTime showTime);
 }
 

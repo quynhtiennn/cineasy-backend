@@ -2,11 +2,13 @@ package com.quynhtien.cineasy.service;
 
 import com.quynhtien.cineasy.dto.request.ShowTimeRequest;
 import com.quynhtien.cineasy.dto.response.ShowTimeResponse;
+import com.quynhtien.cineasy.entity.Auditorium;
 import com.quynhtien.cineasy.entity.Movie;
 import com.quynhtien.cineasy.entity.ShowTime;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.ShowTimeMapper;
+import com.quynhtien.cineasy.repository.AuditoriumRepository;
 import com.quynhtien.cineasy.repository.MovieRepository;
 import com.quynhtien.cineasy.repository.ShowTimeRepository;
 import lombok.AccessLevel;
@@ -25,6 +27,7 @@ public class ShowTimeService {
     ShowTimeRepository showTimeRepository;
     ShowTimeMapper showTimeMapper;
     MovieRepository movieRepository;
+    AuditoriumRepository auditoriumRepository;
 
     //Get all showTimes
     public List<ShowTimeResponse> getShowTimes() {
@@ -35,7 +38,7 @@ public class ShowTimeService {
     //Get showTime by id
     public ShowTimeResponse getShowTime(Long id) {
         ShowTime showTime = showTimeRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.SEAT_NOT_FOUND));
+                    .orElseThrow(() -> new AppException(ErrorCode.SHOWTIME_NOT_FOUND));
         return showTimeMapper.toShowTimeResponse(showTime);
     }
 
@@ -45,6 +48,11 @@ public class ShowTimeService {
         Movie movie = movieRepository.findById(request.getMovieId())
                         .orElseThrow(()-> new AppException(ErrorCode.SHOWTIME_NOT_FOUND));
         showTime.setMovie(movie);
+
+        Auditorium auditorium = auditoriumRepository.findById(request.getAuditoriumId())
+                        .orElseThrow(()-> new AppException(ErrorCode.AUDITORIUM_NOT_FOUND));
+        showTime.setAuditorium(auditorium);
+
         showTimeRepository.save(showTime);
         return showTimeMapper.toShowTimeResponse(showTime);
     }
@@ -55,9 +63,15 @@ public class ShowTimeService {
                 .orElseThrow(() -> new AppException(ErrorCode.SEAT_NOT_FOUND));
 
         showTimeMapper.updateShowTime(request, showTime);
+
         Movie movie = movieRepository.findById(request.getMovieId())
                 .orElseThrow(()-> new AppException(ErrorCode.SHOWTIME_NOT_FOUND));
         showTime.setMovie(movie);
+
+        Auditorium auditorium = auditoriumRepository.findById(request.getAuditoriumId())
+                .orElseThrow(()-> new AppException(ErrorCode.AUDITORIUM_NOT_FOUND));
+        showTime.setAuditorium(auditorium);
+
         showTimeRepository.save(showTime);
         return showTimeMapper.toShowTimeResponse(showTime);
     }

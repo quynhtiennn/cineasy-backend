@@ -26,8 +26,10 @@ public class ShowTime {
     @JsonBackReference
     Movie movie;
 
-   /* @ManyToOne
-    Auditorium hall;*/
+    @ManyToOne
+    @JoinColumn(name = "auditorium_id")
+    @JsonBackReference
+    Auditorium auditorium;
 
     /*@OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
     List<Ticket> tickets;*/

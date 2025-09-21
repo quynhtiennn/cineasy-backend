@@ -1,13 +1,9 @@
 package com.quynhtien.cineasy.dto.response;
 
-import com.quynhtien.cineasy.entity.Movie;
-import com.quynhtien.cineasy.entity.ShowTime;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder
 @Getter
@@ -20,4 +16,6 @@ public class ShowTimeResponse {
     LocalDateTime startTime;
     Long movieId;
     String movieTitle;
+    Long auditoriumId;
+    String auditoriumName;
 }

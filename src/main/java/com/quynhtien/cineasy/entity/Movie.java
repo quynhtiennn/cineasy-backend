@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,7 +31,7 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     @JsonManagedReference
-    List<ShowTime> showTimes;
+    Set<ShowTime> showTimes;
 
 
 }
