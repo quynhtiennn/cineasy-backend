@@ -17,4 +17,7 @@ import java.time.LocalDateTime;
 public class ShowTimeRequest {
     @NotNull(message = "Time must not be null")
     LocalDateTime startTime;
+
+    @Positive(message = "Movie ID must be positive")
+    Long movieId;
 }

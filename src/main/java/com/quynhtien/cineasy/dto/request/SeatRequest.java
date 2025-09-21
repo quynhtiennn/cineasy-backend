@@ -23,4 +23,7 @@ public class SeatRequest {
 
     @NotNull(message = "Type must not be null")
     String seatType;
+
+    @Positive(message = "Auditorium ID must be positive")
+    Long auditoriumId;
 }

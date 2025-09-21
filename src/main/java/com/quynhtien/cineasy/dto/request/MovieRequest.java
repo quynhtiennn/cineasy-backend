@@ -22,7 +22,6 @@ public class MovieRequest {
     String description;
     String genre;
 
-    @NotNull(message = "Duration is required")
     @Min(value = 1, message = "Duration must be at least 1 minute")
     @Max(value = 200, message = "Duration cannot exceed 200 minutes")
     int duration; // minutes

@@ -1,10 +1,12 @@
 package com.quynhtien.cineasy.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,8 +28,9 @@ public class Movie {
     int duration; // minutes
     LocalDate releaseDate;
 
-//    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
-//    private List<Showtime> showtimes;
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    List<ShowTime> showTimes;
 
 
 }

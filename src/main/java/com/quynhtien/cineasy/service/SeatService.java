@@ -2,10 +2,12 @@ package com.quynhtien.cineasy.service;
 
 import com.quynhtien.cineasy.dto.request.SeatRequest;
 import com.quynhtien.cineasy.dto.response.SeatResponse;
+import com.quynhtien.cineasy.entity.Auditorium;
 import com.quynhtien.cineasy.entity.Seat;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.SeatMapper;
+import com.quynhtien.cineasy.repository.AuditoriumRepository;
 import com.quynhtien.cineasy.repository.SeatRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.List;
 public class SeatService {
     SeatRepository seatRepository;
     SeatMapper seatMapper;
+    AuditoriumRepository auditoriumRepository;
 
     //Get all seats
     public List<SeatResponse> getSeats() {
@@ -33,12 +36,19 @@ public class SeatService {
     public SeatResponse getSeat(Long id) {
         Seat seat = seatRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.SEAT_NOT_FOUND));
-        return seatMapper.toSeatResponse(seat);
+        SeatResponse response = seatMapper.toSeatResponse(seat);
+        Auditorium auditorium = seat.getAuditorium();
+        response.setAuditoriumId(auditorium.getId());
+        response.setAuditoriumName(auditorium.getName());
+        return response;
     }
 
     //Create seat
     public SeatResponse createSeat(SeatRequest request) {
         Seat seat = seatMapper.toSeat(request);
+        Auditorium auditorium = auditoriumRepository.findById(request.getAuditoriumId())
+                        .orElseThrow(()-> new AppException(ErrorCode.AUDITORIUM_NOT_FOUND));
+        seat.setAuditorium(auditorium);
         seatRepository.save(seat);
         return seatMapper.toSeatResponse(seat);
     }
@@ -49,6 +59,9 @@ public class SeatService {
                 .orElseThrow(() -> new AppException(ErrorCode.SEAT_NOT_FOUND));
 
         seatMapper.updateSeat(request, seat);
+        Auditorium auditorium = auditoriumRepository.findById(request.getAuditoriumId())
+                .orElseThrow(()-> new AppException(ErrorCode.AUDITORIUM_NOT_FOUND));
+        seat.setAuditorium(auditorium);
         seatRepository.save(seat);
         return seatMapper.toSeatResponse(seat);
     }

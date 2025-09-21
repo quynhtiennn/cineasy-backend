@@ -1,5 +1,6 @@
 package com.quynhtien.cineasy.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -20,12 +21,14 @@ public class ShowTime {
 
     LocalDateTime startTime;
 
-    /*@ManyToOne
+    @ManyToOne
+    @JoinColumn(name = "movie_id")
+    @JsonBackReference
     Movie movie;
 
-    @ManyToOne
-    Auditorium hall;
+   /* @ManyToOne
+    Auditorium hall;*/
 
-    @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
+    /*@OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
     List<Ticket> tickets;*/
 }

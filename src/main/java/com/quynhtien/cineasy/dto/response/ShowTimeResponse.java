@@ -1,10 +1,12 @@
 package com.quynhtien.cineasy.dto.response;
 
+import com.quynhtien.cineasy.entity.Movie;
 import com.quynhtien.cineasy.entity.ShowTime;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -13,12 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MovieResponse {
+public class ShowTimeResponse {
     Long id;
-    String title;
-    String description;
-    String genre;
-    int duration;
-    LocalDate releaseDate;
-    List<ShowTime> showTimes;
+    LocalDateTime startTime;
+    Movie movie;
 }

@@ -1,5 +1,6 @@
 package com.quynhtien.cineasy.dto.response;
 
+import com.quynhtien.cineasy.entity.Auditorium;
 import com.quynhtien.cineasy.enums.SeatType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,4 +16,6 @@ public class SeatResponse {
     String rowLabel;
     int seatNumber;
     SeatType seatType;
+    Long auditoriumId;
+    String auditoriumName;
 }
