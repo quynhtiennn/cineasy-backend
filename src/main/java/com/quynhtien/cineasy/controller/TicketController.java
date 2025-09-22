@@ -2,6 +2,7 @@ package com.quynhtien.cineasy.controller;
 
 import com.quynhtien.cineasy.dto.request.TicketRequest;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
+import com.quynhtien.cineasy.dto.response.ShowTimeResponse;
 import com.quynhtien.cineasy.dto.response.TicketResponse;
 import com.quynhtien.cineasy.service.TicketService;
 import jakarta.validation.Valid;
@@ -26,6 +27,15 @@ public class TicketController {
     public ApiResponse<List<TicketResponse>> findAll() {
         return ApiResponse.<List<TicketResponse>>builder()
                 .result(ticketService.getTickets())
+                .build();
+    }
+
+    //Get ticket by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ApiResponse<TicketResponse> findAll(@PathVariable Long id) {
+        return ApiResponse.<TicketResponse>builder()
+                .result(ticketService.getTicket(id))
                 .build();
     }
 

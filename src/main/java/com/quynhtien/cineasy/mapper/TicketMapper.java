@@ -4,7 +4,6 @@ import com.quynhtien.cineasy.dto.request.TicketRequest;
 import com.quynhtien.cineasy.dto.response.TicketResponse;
 import com.quynhtien.cineasy.entity.Ticket;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 

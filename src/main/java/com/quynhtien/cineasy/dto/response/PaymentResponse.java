@@ -1,36 +1,22 @@
-package com.quynhtien.cineasy.entity;
+package com.quynhtien.cineasy.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.quynhtien.cineasy.enums.PaymentMethod;
 import com.quynhtien.cineasy.enums.PaymentStatus;
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
+@Builder
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-@Entity
-public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+public class PaymentResponse {
     String id;
-
     PaymentMethod method;
     double amount;
     LocalDateTime paymentDate;
     PaymentStatus status;
-
-    @OneToOne
-    @JoinColumn(name = "booking_id")
-    @JsonBackReference
-    Booking booking;
-
-
-
 }

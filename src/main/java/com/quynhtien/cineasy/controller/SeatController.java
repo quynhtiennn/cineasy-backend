@@ -29,6 +29,15 @@ public class SeatController {
                 .build();
     }
 
+    //Get seat by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ApiResponse<SeatResponse> findAll(@PathVariable Long id) {
+        return ApiResponse.<SeatResponse>builder()
+                .result(seatService.getSeat(id))
+                .build();
+    }
+
     //Create seat
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping

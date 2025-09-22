@@ -3,6 +3,7 @@ package com.quynhtien.cineasy.controller;
 import com.quynhtien.cineasy.dto.request.AuditoriumRequest;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
 import com.quynhtien.cineasy.dto.response.AuditoriumResponse;
+import com.quynhtien.cineasy.dto.response.BookingResponse;
 import com.quynhtien.cineasy.service.AuditoriumService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -26,6 +27,15 @@ public class AuditoriumController {
     public ApiResponse<List<AuditoriumResponse>> findAll() {
         return ApiResponse.<List<AuditoriumResponse>>builder()
                 .result(auditoriumService.getAuditoriums())
+                .build();
+    }
+
+    //Get auditorium by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ApiResponse<AuditoriumResponse> findAll(@PathVariable Long id) {
+        return ApiResponse.<AuditoriumResponse>builder()
+                .result(auditoriumService.getAuditorium(id))
                 .build();
     }
 

@@ -22,8 +22,10 @@ public class Ticket {
     double price;
     boolean available;
 
-    /*@ManyToOne
-    Booking booking;*/
+    @ManyToOne
+    @JoinColumn(name = "booking_id")
+    @JsonBackReference
+    Booking booking;
 
     @ManyToOne
     @JoinColumn(name = "show_time_id")

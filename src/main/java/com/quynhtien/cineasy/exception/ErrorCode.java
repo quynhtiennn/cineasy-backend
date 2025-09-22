@@ -36,7 +36,7 @@ public enum ErrorCode {
     MOVIE_NOT_FOUND(6001, "Movie not found", HttpStatus.BAD_REQUEST),
 
     //auditorium error codes 7001 - 7999
-    AUDITORIUM_NOT_FOUND(7001, "Cinema hall not found", HttpStatus.BAD_REQUEST),
+    AUDITORIUM_NOT_FOUND(7001, "Auditorium not found", HttpStatus.BAD_REQUEST),
 
     //seat error codes 8001 - 8999
     SEAT_NOT_FOUND(8001, "Seat not found", HttpStatus.BAD_REQUEST),
@@ -45,9 +45,17 @@ public enum ErrorCode {
     SHOWTIME_NOT_FOUND(9001, "Show time not found", HttpStatus.BAD_REQUEST),
 
     //ticket error codes 10001 - 10999
-    TICKET_NOT_FOUND(10001, "Ticket not found", HttpStatus.BAD_REQUEST);
+    TICKET_NOT_FOUND(10001, "Ticket not found", HttpStatus.BAD_REQUEST),
+    TICKET_NOT_AVAILABLE(10002, "Ticket already booked", HttpStatus.BAD_REQUEST),
 
+    //booking error codes 11001 - 11999
+    BOOKING_NOT_FOUND(11001, "Booking not found", HttpStatus.BAD_REQUEST),
+    BOOKING_ALREADY_CANCELLED(11002, "Booking already cancelled", HttpStatus.BAD_REQUEST),
+    BOOKING_CANNOT_BE_SET(11003, "Booking cannot be set", HttpStatus.BAD_REQUEST),
 
+    //payment error codes 12001 - 12999
+    PAYMENT_NOT_FOUND(12001, "Payment not found", HttpStatus.BAD_REQUEST),
+    PAYMENT_CANNOT_BE_SET(12002, "Payment cannot be set", HttpStatus.BAD_REQUEST);
 
     int code;
     String message;

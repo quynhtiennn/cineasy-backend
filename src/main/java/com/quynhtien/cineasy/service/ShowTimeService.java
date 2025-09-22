@@ -50,7 +50,7 @@ public class ShowTimeService {
     public ShowTimeResponse createShowTime(ShowTimeRequest request) {
         ShowTime showTime = showTimeMapper.toShowTime(request);
         Movie movie = movieRepository.findById(request.getMovieId())
-                        .orElseThrow(()-> new AppException(ErrorCode.SHOWTIME_NOT_FOUND));
+                        .orElseThrow(()-> new AppException(ErrorCode.MOVIE_NOT_FOUND));
         showTime.setMovie(movie);
 
         Auditorium auditorium = auditoriumRepository.findById(request.getAuditoriumId())
