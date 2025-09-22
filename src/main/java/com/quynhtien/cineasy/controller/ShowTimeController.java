@@ -2,6 +2,7 @@ package com.quynhtien.cineasy.controller;
 
 import com.quynhtien.cineasy.dto.request.ShowTimeRequest;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
+import com.quynhtien.cineasy.dto.response.MovieResponse;
 import com.quynhtien.cineasy.dto.response.ShowTimeResponse;
 import com.quynhtien.cineasy.service.ShowTimeService;
 import jakarta.validation.Valid;
@@ -26,6 +27,15 @@ public class ShowTimeController {
     public ApiResponse<List<ShowTimeResponse>> findAll() {
         return ApiResponse.<List<ShowTimeResponse>>builder()
                 .result(showTimeService.getShowTimes())
+                .build();
+    }
+
+    //Get show time by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ApiResponse<ShowTimeResponse> findAll(@PathVariable Long id) {
+        return ApiResponse.<ShowTimeResponse>builder()
+                .result(showTimeService.getShowTime(id))
                 .build();
     }
 

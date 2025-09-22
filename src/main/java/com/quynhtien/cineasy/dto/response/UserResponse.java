@@ -1,5 +1,6 @@
 package com.quynhtien.cineasy.dto.response;
 
+import com.quynhtien.cineasy.entity.Booking;
 import com.quynhtien.cineasy.entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -20,4 +21,6 @@ public class UserResponse {
     String lastName;
 
     Set<Role> roles;
+
+    Set<Booking> bookings;
 }

@@ -2,6 +2,7 @@ package com.quynhtien.cineasy.controller;
 
 import com.quynhtien.cineasy.dto.request.MovieRequest;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
+import com.quynhtien.cineasy.dto.response.AuditoriumResponse;
 import com.quynhtien.cineasy.dto.response.MovieResponse;
 import com.quynhtien.cineasy.service.MovieService;
 import jakarta.validation.Valid;
@@ -26,6 +27,15 @@ public class MovieController {
     public ApiResponse<List<MovieResponse>> findAll() {
         return ApiResponse.<List<MovieResponse>>builder()
                 .result(movieService.getMovies())
+                .build();
+    }
+
+    //Get movie by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ApiResponse<MovieResponse> findAll(@PathVariable Long id) {
+        return ApiResponse.<MovieResponse>builder()
+                .result(movieService.getMovie(id))
                 .build();
     }
 

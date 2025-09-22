@@ -1,13 +1,14 @@
 package com.quynhtien.cineasy.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.quynhtien.cineasy.enums.BookingStatus;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,18 +24,19 @@ public class Booking {
 
     LocalDateTime bookingTime;
     double totalPrice;
-    String status; // PENDING, CONFIRMED, CANCELLED
-
-/*    @ManyToOne
-    private User user;
+    BookingStatus bookingStatus;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
-    private List<Ticket> tickets;
+    @JsonManagedReference
+    Set<Ticket> tickets;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    User user;
 
     @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
-    private Payment payment;*/
-
-
-
+    @JsonManagedReference
+    Payment payment;
 
 }

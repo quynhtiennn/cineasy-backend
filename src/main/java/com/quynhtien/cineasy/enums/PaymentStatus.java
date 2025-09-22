@@ -8,10 +8,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @AllArgsConstructor
-public enum SeatType {
-    REGULAR(80),
-    VIP(120),
-    COUPLE(110);
+public enum PaymentStatus {
+    PENDING,
+    SUCCESSFULLY,
+    FAILED,
+    REFUNDED;
 
-    int price;
 }
