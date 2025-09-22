@@ -2,6 +2,8 @@ package com.quynhtien.cineasy.dto.request;
 
 import com.quynhtien.cineasy.enums.PaymentMethod;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentCreationRequest {
-    @NotBlank(message = "Payment method is required")
+    @NotNull(message = "Payment method is required")
     PaymentMethod method;
 
     @NotBlank(message = "Booking ID is required")

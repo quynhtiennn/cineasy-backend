@@ -53,6 +53,9 @@ public class BookingService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         List<Ticket> tickets = ticketRepository.findAllById(request.getTickets());
+        if (tickets.size() != request.getTickets().size()) {
+            throw new AppException(ErrorCode.TICKET_NOT_FOUND);
+        }
 
         Booking booking = Booking.builder()
                 .bookingTime(LocalDateTime.now())

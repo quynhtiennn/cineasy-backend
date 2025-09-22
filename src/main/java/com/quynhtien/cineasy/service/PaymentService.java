@@ -68,10 +68,10 @@ public class PaymentService {
                 payment.getStatus() == PaymentStatus.REFUNDED) {
             throw new AppException(ErrorCode.PAYMENT_CANNOT_BE_SET);
         }
-        if (payment.getStatus() == request.getPaymentStatus()) {
+        if (payment.getStatus() == request.getStatus()) {
             throw new AppException(ErrorCode.PAYMENT_CANNOT_BE_SET);
         }
-        payment.setStatus(request.getPaymentStatus());
+        payment.setStatus(request.getStatus());
         if (payment.getStatus() == PaymentStatus.SUCCESSFULLY) {
             payment.getBooking().setBookingStatus(BookingStatus.CONFIRMED);
         }
