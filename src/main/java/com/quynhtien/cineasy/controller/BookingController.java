@@ -30,7 +30,6 @@ public class BookingController {
     }
 
     //Get booking by id
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ApiResponse<BookingResponse> findAll(@PathVariable String id) {
         return ApiResponse.<BookingResponse>builder()
@@ -39,7 +38,6 @@ public class BookingController {
     }
 
     //Create booking
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ApiResponse<BookingResponse> createBooking(@RequestBody @Valid BookingRequest request) {
         return ApiResponse.<BookingResponse>builder()

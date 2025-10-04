@@ -48,6 +48,16 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    //Get my Info
+    public UserResponse getMyInfo() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        log.info("Get my info request by: {}", username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        return userMapper.toUserResponse(user);
+    }
+
     //Create user
     public UserResponse createUser(UserCreationRequest request) {
         User user = userMapper.toUser(request);

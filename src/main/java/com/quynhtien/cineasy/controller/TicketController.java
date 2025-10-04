@@ -22,7 +22,6 @@ public class TicketController {
     TicketService ticketService;
 
     //Get all tickets
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ApiResponse<List<TicketResponse>> findAll() {
         return ApiResponse.<List<TicketResponse>>builder()
@@ -49,7 +48,6 @@ public class TicketController {
     }
 
     //Update ticket
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ApiResponse<TicketResponse> updateTicket(@PathVariable Long id, @RequestBody @Valid TicketRequest request) {
         return ApiResponse.<TicketResponse>builder()

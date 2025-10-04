@@ -31,7 +31,6 @@ public class PaymentController {
     }
 
     //Get payment by id
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ApiResponse<PaymentResponse> findAll(@PathVariable String id) {
         return ApiResponse.<PaymentResponse>builder()
@@ -40,7 +39,6 @@ public class PaymentController {
     }
 
     //Create payment
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ApiResponse<PaymentResponse> createPayment(@RequestBody @Valid PaymentCreationRequest request) {
         return ApiResponse.<PaymentResponse>builder()
@@ -49,7 +47,6 @@ public class PaymentController {
     }
 
     //Update payment
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ApiResponse<PaymentResponse> updatePayment(@PathVariable String id, @RequestBody @Valid PaymentUpdateRequest request) {
         return ApiResponse.<PaymentResponse>builder()

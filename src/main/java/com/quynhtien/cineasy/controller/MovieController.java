@@ -22,7 +22,6 @@ public class MovieController {
     MovieService movieService;
 
     //Get all movies
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ApiResponse<List<MovieResponse>> findAll() {
         return ApiResponse.<List<MovieResponse>>builder()
@@ -31,7 +30,6 @@ public class MovieController {
     }
 
     //Get movie by id
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ApiResponse<MovieResponse> findAll(@PathVariable Long id) {
         return ApiResponse.<MovieResponse>builder()
