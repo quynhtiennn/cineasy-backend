@@ -4,6 +4,7 @@ import com.quynhtien.cineasy.entity.Permission;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -15,5 +16,5 @@ import java.util.Set;
 public class RoleResponse {
     String name;
     String description;
-    Set<Permission> permissions;
+    List<Permission> permissions;
 }

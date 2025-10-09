@@ -5,7 +5,7 @@ import com.quynhtien.cineasy.dto.response.BookingResponse;
 import com.quynhtien.cineasy.entity.Booking;
 import com.quynhtien.cineasy.entity.Ticket;
 import com.quynhtien.cineasy.entity.User;
-import com.quynhtien.cineasy.enums.BookingStatus;
+import com.quynhtien.cineasy.enums.BookingStatusEnum;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.BookingMapper;
@@ -59,9 +59,9 @@ public class BookingService {
 
         Booking booking = Booking.builder()
                 .bookingTime(LocalDateTime.now())
-                .bookingStatus(BookingStatus.PENDING)
+                .bookingStatusEnum(BookingStatusEnum.PENDING)
                 .totalPrice(tickets.stream().mapToDouble(Ticket::getPrice).sum())
-                .tickets(new HashSet<>(tickets))
+                .tickets(tickets)
                 .user(user)
                 .build();
 
@@ -78,17 +78,17 @@ public class BookingService {
     }
 
     //Update booking
-    public BookingResponse updateBookingStatus(String id, BookingStatus status) {
+    public BookingResponse updateBookingStatus(String id, BookingStatusEnum status) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_FOUND));
-        if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
+        if (booking.getBookingStatusEnum() == BookingStatusEnum.CANCELLED) {
             throw new AppException(ErrorCode.BOOKING_ALREADY_CANCELLED);
         }
-        if (booking.getBookingStatus() == status) {
+        if (booking.getBookingStatusEnum() == status) {
             throw new AppException(ErrorCode.BOOKING_CANNOT_BE_SET);
         }
-        booking.setBookingStatus(status);
-        if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
+        booking.setBookingStatusEnum(status);
+        if (booking.getBookingStatusEnum() == BookingStatusEnum.CANCELLED) {
             booking.getTickets().forEach(ticket -> ticket.setAvailable(true));
         }
 

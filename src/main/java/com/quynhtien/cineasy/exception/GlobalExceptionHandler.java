@@ -47,7 +47,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ExceptionHandler(Exception.class)
+    ResponseEntity<ApiResponse> handleAppException(Exception ex) {
+        ErrorCode errorCode = ErrorCode.INVALID_REQUEST;
+        ApiResponse response = ApiResponse.builder()
+                .code(errorCode.getCode())
+                .message(ex.getMessage())
+                .build();
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
+    }
+
+    /*@ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<ApiResponse> handleAppException(DataIntegrityViolationException ex) {
         ErrorCode errorCode = ErrorCode.INVALID_REQUEST;
         log.error("Data Exception: " ,ex.getMostSpecificCause().getMessage());
@@ -108,5 +118,5 @@ public class GlobalExceptionHandler {
                 .message(errorCode.getMessage())
                 .build();
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
-    }
+    }*/
 }

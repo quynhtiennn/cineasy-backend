@@ -1,8 +1,6 @@
 package com.quynhtien.cineasy.dto.request;
 
-import com.quynhtien.cineasy.enums.PaymentMethod;
-import com.quynhtien.cineasy.enums.PaymentStatus;
-import jakarta.validation.constraints.NotBlank;
+import com.quynhtien.cineasy.enums.PaymentStatusEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,5 +13,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentUpdateRequest {
     @NotNull(message = "Payment status is required")
-    PaymentStatus status;
+    PaymentStatusEnum status;
 }

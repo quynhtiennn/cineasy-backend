@@ -8,10 +8,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @AllArgsConstructor
-public enum PaymentStatus {
-    PENDING,
-    SUCCESSFULLY,
-    FAILED,
-    REFUNDED;
+public enum RoleEnum {
+    ADMIN,
+    USER,
+    ;
 
 }

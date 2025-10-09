@@ -59,12 +59,12 @@ public class ShowTimeService {
 
         List<Ticket> tickets = auditorium.getSeats().stream()
                 .map(seat -> Ticket.builder()
-                        .price(seat.getSeatType().getPrice())
+                        .price(seat.getSeatTypeEnum().getPrice())
                         .available(true)
                         .seat(seat)
                         .showTime(showTime) // link back
                         .build()).toList();
-        showTime.setTickets(new HashSet<>(tickets));
+        showTime.setTickets(tickets);
 
         showTimeRepository.save(showTime);
         return showTimeMapper.toShowTimeResponse(showTime);

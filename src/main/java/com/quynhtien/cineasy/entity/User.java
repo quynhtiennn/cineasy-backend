@@ -1,24 +1,23 @@
 package com.quynhtien.cineasy.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.quynhtien.cineasy.entity.base.BaseUUIDEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
+@SuperBuilder
 @Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+public class User extends BaseUUIDEntity  {
 
     @Column(unique = true, nullable = false)
     String username;
@@ -29,10 +28,10 @@ public class User {
     String lastName;
 
     @ManyToMany
-    Set<Role> roles;
+    List<Role> roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    Set<Booking> bookings;
+    List<Booking> bookings;
 
 }

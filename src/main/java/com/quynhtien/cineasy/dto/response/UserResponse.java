@@ -5,7 +5,8 @@ import com.quynhtien.cineasy.entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
+import java.util.List;
+import java.util.UUID;
 
 @Builder
 @Getter
@@ -14,13 +15,13 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
-    String id;
+    UUID id;
     String username;
     String email;
     String firstName;
     String lastName;
 
-    Set<Role> roles;
+    List<Role> roles;
 
-    Set<Booking> bookings;
+    List<Booking> bookings;
 }

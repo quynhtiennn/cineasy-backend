@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -27,5 +28,5 @@ public class UserUpdateRequest {
     String lastName;
 
     @NotEmpty(message = "Roles cannot be empty")
-    Set<String> roles;
+    List<String> roles;
 }

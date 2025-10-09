@@ -1,12 +1,13 @@
 package com.quynhtien.cineasy.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quynhtien.cineasy.entity.Ticket;
-import com.quynhtien.cineasy.enums.BookingStatus;
+import com.quynhtien.cineasy.enums.BookingStatusEnum;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Builder
 @Getter
@@ -18,6 +19,9 @@ public class BookingResponse {
     String id;
     LocalDateTime bookingTime;
     double totalPrice;
-    BookingStatus bookingStatus;
-    Set<Ticket> tickets;
+
+    @JsonProperty("bookingStatus")
+    BookingStatusEnum bookingStatusEnum;
+
+    List<Ticket> tickets;
 }

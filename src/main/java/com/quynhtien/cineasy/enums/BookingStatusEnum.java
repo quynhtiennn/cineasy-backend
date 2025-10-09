@@ -8,9 +8,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @AllArgsConstructor
-public enum BookingStatus {
+public enum BookingStatusEnum {
     PENDING,
     CONFIRMED,
-    CANCELLED;
+    CANCELLED,
+    ;
 
 }

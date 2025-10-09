@@ -7,12 +7,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {SeatMapper.class})
 public interface AuditoriumMapper {
     @Mapping(target = "showTimes", ignore = true)
     @Mapping(target = "seats", ignore = true)
     Auditorium toAuditorium(AuditoriumRequest request);
 
+    @Mapping(source = "seats", target = "seatResponses")
     AuditoriumResponse toAuditoriumResponse(Auditorium auditorium);
 
     @Mapping(target = "showTimes", ignore = true)

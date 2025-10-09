@@ -1,7 +1,7 @@
 package com.quynhtien.cineasy.dto.response;
 
-import com.quynhtien.cineasy.enums.PaymentMethod;
-import com.quynhtien.cineasy.enums.PaymentStatus;
+import com.quynhtien.cineasy.enums.PaymentMethodEnum;
+import com.quynhtien.cineasy.enums.PaymentStatusEnum;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentResponse {
     String id;
-    PaymentMethod method;
+    PaymentMethodEnum method;
     double amount;
     LocalDateTime paymentDate;
-    PaymentStatus status;
+    PaymentStatusEnum status;
 }

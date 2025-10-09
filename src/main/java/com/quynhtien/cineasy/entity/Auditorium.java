@@ -1,12 +1,12 @@
 package com.quynhtien.cineasy.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.quynhtien.cineasy.entity.base.BaseLongIdEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
-import java.util.Set;
 
 
 @Getter
@@ -16,10 +16,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 @Entity
-public class Auditorium {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class Auditorium extends BaseLongIdEntity {
 
     @Column(unique = true, nullable = false)
     String name;
@@ -29,11 +26,11 @@ public class Auditorium {
 
     @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
     @JsonManagedReference
-    Set<Seat> seats;
+    List<Seat> seats;
 
     @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
     @JsonManagedReference
-    Set<ShowTime> showTimes;
+    List<ShowTime> showTimes;
 
 
 }
