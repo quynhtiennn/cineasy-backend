@@ -4,7 +4,7 @@ import com.quynhtien.cineasy.dto.request.AuditoriumRequest;
 import com.quynhtien.cineasy.dto.response.AuditoriumResponse;
 import com.quynhtien.cineasy.entity.Auditorium;
 import com.quynhtien.cineasy.entity.Seat;
-import com.quynhtien.cineasy.enums.SeatType;
+import com.quynhtien.cineasy.enums.SeatTypeEnum;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.AuditoriumMapper;
@@ -53,14 +53,14 @@ public class AuditoriumService {
                 Seat seat = Seat.builder()
                         .rowLabel(String.valueOf(rowLabel))
                         .seatNumber(seatNum)
-                        .seatType(SeatType.REGULAR)
+                        .seatTypeEnum(SeatTypeEnum.REGULAR)
                         .auditorium(auditorium)
                         .build();
                 seats.add(seat);
             }
         }
 
-        auditorium.setSeats(new HashSet<>(seats));
+        auditorium.setSeats(seats);
         auditoriumRepository.save(auditorium);
         return auditoriumMapper.toAuditoriumResponse(auditorium);
     }

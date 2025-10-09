@@ -2,11 +2,13 @@ package com.quynhtien.cineasy.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.quynhtien.cineasy.entity.base.BaseLongIdEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -16,10 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class ShowTime {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class ShowTime extends BaseLongIdEntity {
 
     LocalDateTime startTime;
 
@@ -35,5 +34,5 @@ public class ShowTime {
 
     @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL)
     @JsonManagedReference
-    Set<Ticket> tickets;
+    List<Ticket> tickets;
 }

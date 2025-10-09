@@ -67,7 +67,7 @@ public class UserService {
 
         //manually map roles
         List<Role> roles = roleRepository.findAllById(request.getRoles());
-        user.setRoles(new HashSet<>(roles));
+        user.setRoles(roles);
 
         userRepository.save(user);
         return userMapper.toUserResponse(user);
@@ -83,7 +83,7 @@ public class UserService {
 
         //manually map roles
         List<Role> roles = roleRepository.findAllById(request.getRoles());
-        user.setRoles(new HashSet<>(roles));
+        user.setRoles(roles);
 
         userMapper.updateUser(request, user);
         userRepository.save(user);

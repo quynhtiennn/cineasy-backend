@@ -2,13 +2,14 @@ package com.quynhtien.cineasy.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.quynhtien.cineasy.enums.BookingStatus;
+import com.quynhtien.cineasy.entity.base.BaseUUIDEntity;
+import com.quynhtien.cineasy.enums.BookingStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,18 +18,15 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 @Entity
-public class Booking {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+public class Booking extends BaseUUIDEntity {
 
     LocalDateTime bookingTime;
     double totalPrice;
-    BookingStatus bookingStatus;
+    BookingStatusEnum bookingStatusEnum;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     @JsonManagedReference
-    Set<Ticket> tickets;
+    List<Ticket> tickets;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -1,7 +1,7 @@
 package com.quynhtien.cineasy.dto.response;
 
-import com.quynhtien.cineasy.entity.Auditorium;
-import com.quynhtien.cineasy.enums.SeatType;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.quynhtien.cineasy.enums.SeatTypeEnum;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,7 +15,10 @@ public class SeatResponse {
     Long id;
     String rowLabel;
     int seatNumber;
-    SeatType seatType;
+
+    @JsonProperty("seatType")
+    SeatTypeEnum seatTypeEnum;
+
     Long auditoriumId;
     String auditoriumName;
 }

@@ -9,11 +9,17 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.Context;
 import java.util.List;
 
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @RestController
@@ -24,6 +30,9 @@ public class MovieController {
     //Get all movies
     @GetMapping
     public ApiResponse<List<MovieResponse>> findAll() {
+        SecurityContext cont = SecurityContextHolder.getContext();
+        Authentication auth = cont.getAuthentication();
+        log.info("User: " + auth.getName() + " - " + auth.getAuthorities());
         return ApiResponse.<List<MovieResponse>>builder()
                 .result(movieService.getMovies())
                 .build();

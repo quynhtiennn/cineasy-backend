@@ -5,8 +5,8 @@ import com.quynhtien.cineasy.dto.request.PaymentUpdateRequest;
 import com.quynhtien.cineasy.dto.response.PaymentResponse;
 import com.quynhtien.cineasy.entity.Booking;
 import com.quynhtien.cineasy.entity.Payment;
-import com.quynhtien.cineasy.enums.BookingStatus;
-import com.quynhtien.cineasy.enums.PaymentStatus;
+import com.quynhtien.cineasy.enums.BookingStatusEnum;
+import com.quynhtien.cineasy.enums.PaymentStatusEnum;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.PaymentMapper;
@@ -52,7 +52,7 @@ public class PaymentService {
                 .paymentDate(LocalDateTime.now())
                 .method(request.getMethod())
                 .amount(booking.getTotalPrice())
-                .status(PaymentStatus.PENDING)
+                .status(PaymentStatusEnum.PENDING)
                 .booking(booking)
                 .build();
 
@@ -64,20 +64,20 @@ public class PaymentService {
     public PaymentResponse updatePaymentStatus(String id, PaymentUpdateRequest request) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_NOT_FOUND));
-        if (payment.getStatus() == PaymentStatus.FAILED ||
-                payment.getStatus() == PaymentStatus.REFUNDED) {
+        if (payment.getStatus() == PaymentStatusEnum.FAILED ||
+                payment.getStatus() == PaymentStatusEnum.REFUNDED) {
             throw new AppException(ErrorCode.PAYMENT_CANNOT_BE_SET);
         }
         if (payment.getStatus() == request.getStatus()) {
             throw new AppException(ErrorCode.PAYMENT_CANNOT_BE_SET);
         }
         payment.setStatus(request.getStatus());
-        if (payment.getStatus() == PaymentStatus.SUCCESSFULLY) {
-            payment.getBooking().setBookingStatus(BookingStatus.CONFIRMED);
+        if (payment.getStatus() == PaymentStatusEnum.SUCCESSFULLY) {
+            payment.getBooking().setBookingStatusEnum(BookingStatusEnum.CONFIRMED);
         }
-        else if (payment.getStatus() == PaymentStatus.FAILED ||
-                payment.getStatus() == PaymentStatus.REFUNDED) {
-            payment.getBooking().setBookingStatus(BookingStatus.CANCELLED);
+        else if (payment.getStatus() == PaymentStatusEnum.FAILED ||
+                payment.getStatus() == PaymentStatusEnum.REFUNDED) {
+            payment.getBooking().setBookingStatusEnum(BookingStatusEnum.CANCELLED);
             payment.getBooking().getTickets().forEach(ticket -> ticket.setAvailable(true));
         }
 

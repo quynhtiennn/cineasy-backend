@@ -39,7 +39,7 @@ public class RoleService {
 
         //manually map permissions
         List<Permission> permissions = permissionRepository.findAllById(request.getPermissions());
-        role.setPermissions(new HashSet<>(permissions));
+        role.setPermissions(permissions);
 
         roleRepository.save(role);
         return roleMapper.toRoleResponse(role);
@@ -54,7 +54,7 @@ public class RoleService {
 
         //manually map permissions
         List<Permission> permissions = permissionRepository.findAllById(request.getPermissions());
-        role.setPermissions(new HashSet<>(permissions));
+        role.setPermissions(permissions);
 
         roleRepository.save(role);
         return roleMapper.toRoleResponse(role);

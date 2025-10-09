@@ -1,6 +1,6 @@
 package com.quynhtien.cineasy.dto.response;
 
-import com.quynhtien.cineasy.entity.Seat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quynhtien.cineasy.entity.ShowTime;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,6 +18,9 @@ public class AuditoriumResponse {
     String name;
     int totalRows;
     int seatsPerRow;
-    List<Seat> seats;
+
+    @JsonProperty("seats")
+    List<SeatResponse> seatResponses;
+
     List<ShowTime> showTimes;
 }

@@ -1,12 +1,13 @@
 package com.quynhtien.cineasy.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.quynhtien.cineasy.enums.SeatType;
+import com.quynhtien.cineasy.entity.base.BaseLongIdEntity;
+import com.quynhtien.cineasy.enums.SeatTypeEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,15 +17,12 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 @Entity
-public class Seat {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class Seat extends BaseLongIdEntity {
 
     String rowLabel;
     int seatNumber;
 
-    SeatType seatType;
+    SeatTypeEnum seatTypeEnum;
 
     @ManyToOne
     @JoinColumn(name = "auditorium_id")
@@ -33,5 +31,5 @@ public class Seat {
 
     @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
     @JsonBackReference
-    Set<Ticket> tickets;
+    List<Ticket> tickets;
 }

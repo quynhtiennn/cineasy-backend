@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Builder
 @Getter
@@ -20,5 +20,5 @@ public class ShowTimeResponse {
     String movieTitle;
     Long auditoriumId;
     String auditoriumName;
-    Set<Ticket> tickets;
+    List<Ticket> tickets;
 }

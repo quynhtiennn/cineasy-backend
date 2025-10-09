@@ -1,8 +1,9 @@
 package com.quynhtien.cineasy.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.quynhtien.cineasy.enums.PaymentMethod;
-import com.quynhtien.cineasy.enums.PaymentStatus;
+import com.quynhtien.cineasy.entity.base.BaseUUIDEntity;
+import com.quynhtien.cineasy.enums.PaymentMethodEnum;
+import com.quynhtien.cineasy.enums.PaymentStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,15 +17,12 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 @Entity
-public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+public class Payment extends BaseUUIDEntity {
 
-    PaymentMethod method;
+    PaymentMethodEnum method;
     double amount;
     LocalDateTime paymentDate;
-    PaymentStatus status;
+    PaymentStatusEnum status;
 
     @OneToOne
     @JoinColumn(name = "booking_id")

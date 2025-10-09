@@ -15,7 +15,7 @@ public interface SeatMapper {
     default SeatResponse toSeatResponse(Seat seat){
         return SeatResponse.builder()
                 .id(seat.getId())
-                .seatType(seat.getSeatType())
+                .seatTypeEnum(seat.getSeatTypeEnum())
                 .rowLabel(seat.getRowLabel())
                 .seatNumber(seat.getSeatNumber())
                 .auditoriumId(seat.getAuditorium().getId())

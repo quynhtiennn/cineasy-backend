@@ -30,6 +30,12 @@ public class UserController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/v2")
+    public List<UserResponse> findAll2() {
+        return userService.getUsers();
+    }
+
     //Get user by id
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")

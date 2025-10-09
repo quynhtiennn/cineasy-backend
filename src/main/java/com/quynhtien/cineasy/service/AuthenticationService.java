@@ -9,7 +9,6 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.quynhtien.cineasy.dto.request.TokenRequest;
 import com.quynhtien.cineasy.dto.request.AuthenticationRequest;
-import com.quynhtien.cineasy.dto.request.RefreshTokenRequest;
 import com.quynhtien.cineasy.dto.response.IntrospectResponse;
 import com.quynhtien.cineasy.dto.response.AuthenticationResponse;
 import com.quynhtien.cineasy.entity.LoggedOutToken;
