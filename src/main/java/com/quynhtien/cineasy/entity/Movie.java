@@ -31,5 +31,9 @@ public class Movie extends BaseLongIdEntity {
     @JsonManagedReference
     List<ShowTime> showTimes;
 
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] image;
+
 
 }

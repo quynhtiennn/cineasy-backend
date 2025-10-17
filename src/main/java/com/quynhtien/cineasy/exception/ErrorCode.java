@@ -55,8 +55,12 @@ public enum ErrorCode {
 
     //payment error codes 12001 - 12999
     PAYMENT_NOT_FOUND(12001, "Payment not found", HttpStatus.BAD_REQUEST),
-    PAYMENT_CANNOT_BE_SET(12002, "Payment cannot be set", HttpStatus.BAD_REQUEST);
+    PAYMENT_CANNOT_BE_SET(12002, "Payment cannot be set", HttpStatus.BAD_REQUEST),
 
+    //file error codes 13001 - 13999
+    FILE_NOT_FOUND(13001, "File not found", HttpStatus.BAD_REQUEST),
+
+    ;
     int code;
     String message;
     HttpStatusCode httpStatusCode;
