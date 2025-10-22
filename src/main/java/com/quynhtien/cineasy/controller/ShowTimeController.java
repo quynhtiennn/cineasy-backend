@@ -1,9 +1,8 @@
 package com.quynhtien.cineasy.controller;
 
-import com.quynhtien.cineasy.dto.request.ShowTimeRequest;
+import com.quynhtien.cineasy.dto.request.ShowtimeRequest;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
-import com.quynhtien.cineasy.dto.response.MovieResponse;
-import com.quynhtien.cineasy.dto.response.ShowTimeResponse;
+import com.quynhtien.cineasy.dto.response.ShowtimeResponse;
 import com.quynhtien.cineasy.service.ShowTimeService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -17,24 +16,23 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/showTimes")
+@RequestMapping("/showtimes")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ShowTimeController {
     ShowTimeService showTimeService;
 
-    //Get all showTimes
-    @PreAuthorize("hasRole('ADMIN')")
+    //Get all showtimes
     @GetMapping
-    public ApiResponse<List<ShowTimeResponse>> findAll() {
-        return ApiResponse.<List<ShowTimeResponse>>builder()
+    public ApiResponse<List<ShowtimeResponse>> findAll() {
+        return ApiResponse.<List<ShowtimeResponse>>builder()
                 .result(showTimeService.getShowTimes())
                 .build();
     }
 
     //Get show time by id
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
-    public ApiResponse<ShowTimeResponse> findAll(@PathVariable Long id) {
-        return ApiResponse.<ShowTimeResponse>builder()
+    public ApiResponse<ShowtimeResponse> findAll(@PathVariable Long id) {
+        return ApiResponse.<ShowtimeResponse>builder()
                 .result(showTimeService.getShowTime(id))
                 .build();
     }
@@ -42,8 +40,8 @@ public class ShowTimeController {
     //Create showTime
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ApiResponse<ShowTimeResponse> createShowTime(@RequestBody @Valid ShowTimeRequest request) {
-        return ApiResponse.<ShowTimeResponse>builder()
+    public ApiResponse<ShowtimeResponse> createShowTime(@RequestBody @Valid ShowtimeRequest request) {
+        return ApiResponse.<ShowtimeResponse>builder()
                 .result(showTimeService.createShowTime(request))
                 .build();
     }
@@ -51,8 +49,8 @@ public class ShowTimeController {
     //Update showTime
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ApiResponse<ShowTimeResponse> updateShowTime(@PathVariable Long id, @RequestBody @Valid ShowTimeRequest request) {
-        return ApiResponse.<ShowTimeResponse>builder()
+    public ApiResponse<ShowtimeResponse> updateShowTime(@PathVariable Long id, @RequestBody @Valid ShowtimeRequest request) {
+        return ApiResponse.<ShowtimeResponse>builder()
                 .result(showTimeService.updateShowTime(id, request))
                 .build();
     }

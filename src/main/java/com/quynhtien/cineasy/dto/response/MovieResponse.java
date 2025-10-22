@@ -1,6 +1,7 @@
 package com.quynhtien.cineasy.dto.response;
 
-import com.quynhtien.cineasy.entity.ShowTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.quynhtien.cineasy.entity.Showtime;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,6 +20,13 @@ public class MovieResponse {
     String description;
     String genre;
     int duration;
+    String rating;
     LocalDate releaseDate;
-    List<ShowTime> showTimes;
+    String posterUrl;
+    String backdropUrl;
+    String director;
+    String cast;
+
+    @JsonProperty("showtimeSummaries")
+    List<ShowtimeSummaryResponse> showtimeSummaryResponses;
 }

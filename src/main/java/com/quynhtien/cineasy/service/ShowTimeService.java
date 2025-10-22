@@ -1,14 +1,14 @@
 package com.quynhtien.cineasy.service;
 
-import com.quynhtien.cineasy.dto.request.ShowTimeRequest;
-import com.quynhtien.cineasy.dto.response.ShowTimeResponse;
+import com.quynhtien.cineasy.dto.request.ShowtimeRequest;
+import com.quynhtien.cineasy.dto.response.ShowtimeResponse;
 import com.quynhtien.cineasy.entity.Auditorium;
 import com.quynhtien.cineasy.entity.Movie;
-import com.quynhtien.cineasy.entity.ShowTime;
+import com.quynhtien.cineasy.entity.Showtime;
 import com.quynhtien.cineasy.entity.Ticket;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
-import com.quynhtien.cineasy.mapper.ShowTimeMapper;
+import com.quynhtien.cineasy.mapper.ShowtimeMapper;
 import com.quynhtien.cineasy.repository.AuditoriumRepository;
 import com.quynhtien.cineasy.repository.MovieRepository;
 import com.quynhtien.cineasy.repository.ShowTimeRepository;
@@ -19,7 +19,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Slf4j
@@ -28,27 +27,27 @@ import java.util.List;
 @Service
 public class ShowTimeService {
     ShowTimeRepository showTimeRepository;
-    ShowTimeMapper showTimeMapper;
+    ShowtimeMapper showtimeMapper;
     MovieRepository movieRepository;
     AuditoriumRepository auditoriumRepository;
     TicketRepository ticketRepository;
 
-    //Get all showTimes
-    public List<ShowTimeResponse> getShowTimes() {
+    //Get all showtimes
+    public List<ShowtimeResponse> getShowTimes() {
         return showTimeRepository.findAll().stream()
-                .map(showTimeMapper::toShowTimeResponse).toList();
+                .map(showtimeMapper::toShowtimeResponse).toList();
     }
 
     //Get showTime by id
-    public ShowTimeResponse getShowTime(Long id) {
-        ShowTime showTime = showTimeRepository.findById(id)
+    public ShowtimeResponse getShowTime(Long id) {
+        Showtime showTime = showTimeRepository.findById(id)
                     .orElseThrow(() -> new AppException(ErrorCode.SHOWTIME_NOT_FOUND));
-        return showTimeMapper.toShowTimeResponse(showTime);
+        return showtimeMapper.toShowtimeResponse(showTime);
     }
 
     //Create showTime
-    public ShowTimeResponse createShowTime(ShowTimeRequest request) {
-        ShowTime showTime = showTimeMapper.toShowTime(request);
+    public ShowtimeResponse createShowTime(ShowtimeRequest request) {
+        Showtime showTime = showtimeMapper.toShowtime(request);
         Movie movie = movieRepository.findById(request.getMovieId())
                         .orElseThrow(()-> new AppException(ErrorCode.MOVIE_NOT_FOUND));
         showTime.setMovie(movie);
@@ -67,15 +66,15 @@ public class ShowTimeService {
         showTime.setTickets(tickets);
 
         showTimeRepository.save(showTime);
-        return showTimeMapper.toShowTimeResponse(showTime);
+        return showtimeMapper.toShowtimeResponse(showTime);
     }
 
     //Update showTime
-    public ShowTimeResponse updateShowTime(Long id, ShowTimeRequest request) {
-        ShowTime showTime = showTimeRepository.findById(id)
+    public ShowtimeResponse updateShowTime(Long id, ShowtimeRequest request) {
+        Showtime showTime = showTimeRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.SEAT_NOT_FOUND));
 
-        showTimeMapper.updateShowTime(request, showTime);
+        showtimeMapper.updateShowtime(request, showTime);
 
         Movie movie = movieRepository.findById(request.getMovieId())
                 .orElseThrow(()-> new AppException(ErrorCode.SHOWTIME_NOT_FOUND));
@@ -86,7 +85,7 @@ public class ShowTimeService {
         showTime.setAuditorium(auditorium);
 
         showTimeRepository.save(showTime);
-        return showTimeMapper.toShowTimeResponse(showTime);
+        return showtimeMapper.toShowtimeResponse(showTime);
     }
 
     //Delete showTime

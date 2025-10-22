@@ -12,16 +12,7 @@ public interface SeatMapper {
     @Mapping(target = "auditorium", ignore = true)
     Seat toSeat(SeatRequest request);
 
-    default SeatResponse toSeatResponse(Seat seat){
-        return SeatResponse.builder()
-                .id(seat.getId())
-                .seatTypeEnum(seat.getSeatTypeEnum())
-                .rowLabel(seat.getRowLabel())
-                .seatNumber(seat.getSeatNumber())
-                .auditoriumId(seat.getAuditorium().getId())
-                .auditoriumName(seat.getAuditorium().getName())
-                .build();
-    }
+    SeatResponse toSeatResponse(Seat seat);
 
     @Mapping(target = "auditorium", ignore = true)
     void updateSeat(SeatRequest request, @MappingTarget Seat seat);

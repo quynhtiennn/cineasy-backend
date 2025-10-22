@@ -1,11 +1,7 @@
 package com.quynhtien.cineasy.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.quynhtien.cineasy.entity.ShowTime;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Builder
 @Getter

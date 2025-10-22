@@ -2,7 +2,6 @@ package com.quynhtien.cineasy.controller;
 
 import com.quynhtien.cineasy.dto.request.TicketRequest;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
-import com.quynhtien.cineasy.dto.response.ShowTimeResponse;
 import com.quynhtien.cineasy.dto.response.TicketResponse;
 import com.quynhtien.cineasy.service.TicketService;
 import jakarta.validation.Valid;

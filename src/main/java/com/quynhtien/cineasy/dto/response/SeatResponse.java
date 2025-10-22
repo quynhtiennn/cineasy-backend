@@ -19,6 +19,4 @@ public class SeatResponse {
     @JsonProperty("seatType")
     SeatTypeEnum seatTypeEnum;
 
-    Long auditoriumId;
-    String auditoriumName;
 }

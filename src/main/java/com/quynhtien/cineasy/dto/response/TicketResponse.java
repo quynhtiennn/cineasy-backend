@@ -1,6 +1,6 @@
 package com.quynhtien.cineasy.dto.response;
 
-import com.quynhtien.cineasy.entity.Seat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,5 +14,9 @@ public class TicketResponse {
     Long id;
     double price;
     boolean available;
-    Seat seat;
+
+//    @JsonProperty("seat")
+////    SeatResponse seatResponse;
+    String rowLabel;
+    int seatNumber;
 }

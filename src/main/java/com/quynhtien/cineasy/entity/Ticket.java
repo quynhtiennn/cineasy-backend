@@ -28,7 +28,7 @@ public class Ticket extends BaseLongIdEntity {
     @ManyToOne
     @JoinColumn(name = "show_time_id")
     @JsonBackReference
-    ShowTime showTime;
+    Showtime showTime;
 
     @ManyToOne
     @JoinColumn(name = "seat_id")

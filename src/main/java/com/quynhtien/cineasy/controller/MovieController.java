@@ -15,8 +15,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.Context;
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -61,6 +63,26 @@ public class MovieController {
     public ApiResponse<MovieResponse> updateMovie(@PathVariable Long id, @RequestBody @Valid MovieRequest request) {
         return ApiResponse.<MovieResponse>builder()
                 .result(movieService.updateMovie(id, request))
+                .build();
+    }
+
+    //Update poster
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}/poster")
+    public ApiResponse<MovieResponse> updatePoster(@PathVariable Long id,
+                                                   @RequestParam("file") MultipartFile file) throws IOException {
+        return ApiResponse.<MovieResponse>builder()
+                .result(movieService.updatePoster(file, id))
+                .build();
+    }
+
+    //Update backdrop
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}/backdrop")
+    public ApiResponse<MovieResponse> updateBackdrop(@PathVariable Long id,
+                                                   @RequestParam("file") MultipartFile file) throws IOException {
+        return ApiResponse.<MovieResponse>builder()
+                .result(movieService.updateBackdrop(file, id))
                 .build();
     }
 

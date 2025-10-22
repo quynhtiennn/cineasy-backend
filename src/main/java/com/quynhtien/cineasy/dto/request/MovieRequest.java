@@ -19,13 +19,25 @@ public class MovieRequest {
     @NotBlank(message = "Title is required")
     String title;
 
+    @NotBlank(message = "Description is required")
     String description;
+
+    @NotBlank(message = "Genre is required")
     String genre;
 
     @Min(value = 1, message = "Duration must be at least 1 minute")
     @Max(value = 200, message = "Duration cannot exceed 200 minutes")
     int duration; // minutes
 
+    @NotBlank(message = "Rating is required")
+    String rating;
+
     @NotNull(message = "Release date is required")
     LocalDate releaseDate;
+
+    @NotBlank(message = "Director is required")
+    String director;
+
+    @NotBlank(message = "Cast is required")
+    String cast;
 }

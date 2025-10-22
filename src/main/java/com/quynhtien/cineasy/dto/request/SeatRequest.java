@@ -1,5 +1,6 @@
 package com.quynhtien.cineasy.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -22,7 +23,8 @@ public class SeatRequest {
     int seatNumber;
 
     @NotNull(message = "Type must not be null")
-    String seatType;
+    @JsonProperty("seatType")
+    String seatTypeEnum;
 
     @Positive(message = "Auditorium ID must be positive")
     Long auditoriumId;

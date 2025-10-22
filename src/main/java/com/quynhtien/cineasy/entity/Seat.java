@@ -1,6 +1,7 @@
 package com.quynhtien.cineasy.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quynhtien.cineasy.entity.base.BaseLongIdEntity;
 import com.quynhtien.cineasy.enums.SeatTypeEnum;
 import jakarta.persistence.*;
@@ -22,6 +23,7 @@ public class Seat extends BaseLongIdEntity {
     String rowLabel;
     int seatNumber;
 
+    @JsonProperty("seatType")
     SeatTypeEnum seatTypeEnum;
 
     @ManyToOne

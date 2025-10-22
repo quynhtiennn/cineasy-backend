@@ -1,7 +1,7 @@
 package com.quynhtien.cineasy.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.quynhtien.cineasy.entity.ShowTime;
+import com.quynhtien.cineasy.entity.Showtime;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,5 +22,5 @@ public class AuditoriumResponse {
     @JsonProperty("seats")
     List<SeatResponse> seatResponses;
 
-    List<ShowTime> showTimes;
+    List<Showtime> showtimes;
 }

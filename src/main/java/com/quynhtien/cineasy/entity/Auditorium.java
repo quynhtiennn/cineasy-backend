@@ -30,7 +30,7 @@ public class Auditorium extends BaseLongIdEntity {
 
     @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
     @JsonManagedReference
-    List<ShowTime> showTimes;
+    List<Showtime> showtimes;
 
 
 }

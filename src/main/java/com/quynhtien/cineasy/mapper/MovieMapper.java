@@ -7,14 +7,15 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ShowtimeMapper.class})
 public interface MovieMapper {
-    @Mapping(target = "showTimes", ignore = true)
+    @Mapping(target = "showtimes", ignore = true)
     Movie toMovie(MovieRequest request);
 
+    @Mapping(source = "showtimes", target = "showtimeSummaryResponses")
     MovieResponse toMovieResponse(Movie movie);
 
-    @Mapping(target = "showTimes", ignore = true)
+    @Mapping(target = "showtimes", ignore = true)
     void updateMovie(MovieRequest request, @MappingTarget Movie movie);
 }
 

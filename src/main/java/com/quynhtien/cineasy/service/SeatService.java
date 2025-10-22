@@ -4,6 +4,7 @@ import com.quynhtien.cineasy.dto.request.SeatRequest;
 import com.quynhtien.cineasy.dto.response.SeatResponse;
 import com.quynhtien.cineasy.entity.Auditorium;
 import com.quynhtien.cineasy.entity.Seat;
+import com.quynhtien.cineasy.entity.Ticket;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.SeatMapper;
@@ -55,11 +56,9 @@ public class SeatService {
                 .orElseThrow(() -> new AppException(ErrorCode.SEAT_NOT_FOUND));
 
         seatMapper.updateSeat(request, seat);
-        Auditorium auditorium = auditoriumRepository.findById(request.getAuditoriumId())
-                .orElseThrow(()-> new AppException(ErrorCode.AUDITORIUM_NOT_FOUND));
-        seat.setAuditorium(auditorium);
-        seatRepository.save(seat);
-        return seatMapper.toSeatResponse(seat);
+        List<Ticket> tickets = seat.getTickets();
+        tickets.forEach(ticket -> {ticket.setPrice(seat.getSeatTypeEnum().getPrice());});
+        return seatMapper.toSeatResponse(seatRepository.save(seat));
     }
 
     //Delete seat

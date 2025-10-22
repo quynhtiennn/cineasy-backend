@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -24,16 +23,19 @@ public class Movie extends BaseLongIdEntity {
 
     String description;
     String genre;
-    int duration; // minutes
+    int duration;
+    String rating;
     LocalDate releaseDate;
+    String posterUrl;
+    String backdropUrl;
+    String director;
+    String cast;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     @JsonManagedReference
-    List<ShowTime> showTimes;
+    List<Showtime> showtimes;
 
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] image;
+
 
 
 }

@@ -23,17 +23,28 @@ public class SecurityConfig {
             "/auth/login",
             "/auth/introspect",
             "/auth/refresh",
-            "/users"
+            "/users",
+
     };
+
+    private final String[] PUBLIC_GET_ENDPOINTS = {
+            "/movies",
+            "/movies/**",
+            "/showtimes/**",
+            "/files/download/**",
+    };
+
 
     CustomJwtDecoder customJwtDecoder;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
