@@ -24,8 +24,6 @@ public class User extends BaseUUIDEntity  {
 
     String password;
     String email;
-    String firstName;
-    String lastName;
 
     @ManyToMany
     List<Role> roles;

@@ -1,10 +1,13 @@
 package com.quynhtien.cineasy.service;
 
+import com.quynhtien.cineasy.dto.request.AuthenticationRequest;
 import com.quynhtien.cineasy.dto.request.UserCreationRequest;
 import com.quynhtien.cineasy.dto.request.UserUpdateRequest;
+import com.quynhtien.cineasy.dto.response.AuthenticationResponse;
 import com.quynhtien.cineasy.dto.response.UserResponse;
 import com.quynhtien.cineasy.entity.Role;
 import com.quynhtien.cineasy.entity.User;
+import com.quynhtien.cineasy.enums.RoleEnum;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.UserMapper;
@@ -19,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -31,6 +35,7 @@ public class UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
+    AuthenticationService authenticationService;
 
     //Get all users
     public List<UserResponse> getUsers() {
@@ -59,18 +64,27 @@ public class UserService {
     }
 
     //Create user
-    public UserResponse createUser(UserCreationRequest request) {
+    public AuthenticationResponse createUser(UserCreationRequest request) {
         User user = userMapper.toUser(request);
 
         //encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         //manually map roles
-        List<Role> roles = roleRepository.findAllById(request.getRoles());
+        List<Role> roles;
+        if(request.getRoles() == null || request.getRoles().isEmpty()) {
+            //assign default role USER
+            Role userRole = roleRepository.findById(RoleEnum.USER.name())
+                    .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+            roles = List.of(userRole);
+        } else {
+            roles = roleRepository.findAllById(request.getRoles());
+        }
         user.setRoles(roles);
 
         userRepository.save(user);
-        return userMapper.toUserResponse(user);
+        return authenticationService.login(
+                new AuthenticationRequest(request.getUsername(), request.getPassword()));
     }
 
     //Update user

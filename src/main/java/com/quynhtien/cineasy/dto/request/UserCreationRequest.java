@@ -29,13 +29,6 @@ public class UserCreationRequest {
     @Email(message = "Invalid email format")
     String email;
 
-    @NotBlank(message = "First name cannot be blank")
-    String firstName;
-
-    @NotBlank(message = "Last name cannot be blank")
-    String lastName;
-
-    @NotEmpty(message = "Roles cannot be empty")
     List<String> roles;
 
 }

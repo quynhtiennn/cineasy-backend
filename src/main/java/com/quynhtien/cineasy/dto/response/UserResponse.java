@@ -18,8 +18,6 @@ public class UserResponse {
     UUID id;
     String username;
     String email;
-    String firstName;
-    String lastName;
 
     List<Role> roles;
 

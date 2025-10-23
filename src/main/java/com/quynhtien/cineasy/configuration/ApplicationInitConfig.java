@@ -26,13 +26,14 @@ public class ApplicationInitConfig {
     ApplicationRunner init(UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
 
+            if(roleRepository.findById(RoleEnum.USER.name()).isEmpty()) {
+                roleRepository.save(Role.builder().name(RoleEnum.USER.name()).build());
+            }
             if (userRepository.findByUsername("admin").isEmpty()) {
                 Role role = roleRepository.save(Role.builder().name(RoleEnum.ADMIN.name()).build());
                 User user = User.builder()
                         .username("admin")
                         .password(passwordEncoder.encode("12345678"))
-                        .firstName("admin")
-                        .lastName("admin")
                         .email("admin@admin.com")
                         .roles(List.of(role))
                         .build();

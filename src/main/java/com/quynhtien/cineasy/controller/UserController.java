@@ -3,6 +3,7 @@ package com.quynhtien.cineasy.controller;
 import com.quynhtien.cineasy.dto.request.UserCreationRequest;
 import com.quynhtien.cineasy.dto.request.UserUpdateRequest;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
+import com.quynhtien.cineasy.dto.response.AuthenticationResponse;
 import com.quynhtien.cineasy.dto.response.UserResponse;
 import com.quynhtien.cineasy.service.UserService;
 import jakarta.validation.Valid;
@@ -55,8 +56,8 @@ public class UserController {
 
     //Create user
     @PostMapping
-    public ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
-        return ApiResponse.<UserResponse>builder()
+    public ApiResponse<AuthenticationResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
+        return ApiResponse.<AuthenticationResponse>builder()
                 .result(userService.createUser(request))
                 .build();
     }
