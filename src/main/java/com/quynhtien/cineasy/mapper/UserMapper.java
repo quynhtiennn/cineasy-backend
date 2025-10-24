@@ -8,11 +8,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        uses = {BookingMapper.class})
 public interface UserMapper {
     @Mapping(target = "roles", ignore = true)
     User toUser(UserCreationRequest request);
 
+    @Mapping(target = "bookingResponses", source = "bookings")
     UserResponse toUserResponse(User user);
 
     @Mapping(target = "roles", ignore = true)

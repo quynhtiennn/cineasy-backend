@@ -1,6 +1,5 @@
 package com.quynhtien.cineasy.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,8 +14,6 @@ public class TicketResponse {
     double price;
     boolean available;
 
-//    @JsonProperty("seat")
-////    SeatResponse seatResponse;
     String rowLabel;
     int seatNumber;
 }

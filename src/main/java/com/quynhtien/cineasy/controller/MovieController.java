@@ -32,9 +32,6 @@ public class MovieController {
     //Get all movies
     @GetMapping
     public ApiResponse<List<MovieResponse>> findAll() {
-        SecurityContext cont = SecurityContextHolder.getContext();
-        Authentication auth = cont.getAuthentication();
-        log.info("User: " + auth.getName() + " - " + auth.getAuthorities());
         return ApiResponse.<List<MovieResponse>>builder()
                 .result(movieService.getMovies())
                 .build();

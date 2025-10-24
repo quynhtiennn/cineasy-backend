@@ -1,5 +1,6 @@
 package com.quynhtien.cineasy.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quynhtien.cineasy.entity.Booking;
 import com.quynhtien.cineasy.entity.Role;
 import lombok.*;
@@ -17,9 +18,9 @@ import java.util.UUID;
 public class UserResponse {
     UUID id;
     String username;
-    String email;
 
     List<Role> roles;
 
-    List<Booking> bookings;
+    @JsonProperty("bookings")
+    List<BookingResponse> bookingResponses;
 }

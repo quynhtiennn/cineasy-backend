@@ -20,8 +20,12 @@ public class BookingResponse {
     LocalDateTime bookingTime;
     double totalPrice;
 
+    String movieTitle;
+    LocalDateTime showtimeStartTime;
+
     @JsonProperty("bookingStatus")
     BookingStatusEnum bookingStatusEnum;
 
-    List<Ticket> tickets;
+    @JsonProperty("tickets")
+    List<TicketResponse> ticketResponses;
 }

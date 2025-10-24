@@ -17,11 +17,13 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -49,7 +51,10 @@ public class BookingService {
 
     //Create booking
     public BookingResponse createBooking(BookingRequest request) {
-        User user = userRepository.findById(request.getUserId())
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+
+        User user = userRepository.findByUsername(userName)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         List<Ticket> tickets = ticketRepository.findAllById(request.getTickets());

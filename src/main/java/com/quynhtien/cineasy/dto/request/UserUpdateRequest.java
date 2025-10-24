@@ -17,15 +17,6 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateRequest {
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Invalid email format")
-    String email;
-
-    @NotBlank(message = "First name cannot be blank")
-    String firstName;
-
-    @NotBlank(message = "Last name cannot be blank")
-    String lastName;
 
     @NotEmpty(message = "Roles cannot be empty")
     List<String> roles;

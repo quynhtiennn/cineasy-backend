@@ -17,6 +17,4 @@ public class BookingRequest {
     @NotEmpty(message = "Title is required")
     List<Long> tickets;
 
-    @NotBlank(message = "User ID is required")
-    String userId;
 }

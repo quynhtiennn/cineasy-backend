@@ -31,7 +31,7 @@ public class Showtime extends BaseLongIdEntity {
     @JsonBackReference
     Auditorium auditorium;
 
-    @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
     @JsonManagedReference
     List<Ticket> tickets;
 }

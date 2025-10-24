@@ -12,7 +12,6 @@ import com.quynhtien.cineasy.mapper.ShowtimeMapper;
 import com.quynhtien.cineasy.repository.AuditoriumRepository;
 import com.quynhtien.cineasy.repository.MovieRepository;
 import com.quynhtien.cineasy.repository.ShowTimeRepository;
-import com.quynhtien.cineasy.repository.TicketRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,52 +25,51 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class ShowTimeService {
-    ShowTimeRepository showTimeRepository;
+    ShowTimeRepository showtimeRepository;
     ShowtimeMapper showtimeMapper;
     MovieRepository movieRepository;
     AuditoriumRepository auditoriumRepository;
-    TicketRepository ticketRepository;
 
     //Get all showtimes
     public List<ShowtimeResponse> getShowTimes() {
-        return showTimeRepository.findAll().stream()
+        return showtimeRepository.findAll().stream()
                 .map(showtimeMapper::toShowtimeResponse).toList();
     }
 
     //Get showTime by id
     public ShowtimeResponse getShowTime(Long id) {
-        Showtime showTime = showTimeRepository.findById(id)
+        Showtime showTime = showtimeRepository.findById(id)
                     .orElseThrow(() -> new AppException(ErrorCode.SHOWTIME_NOT_FOUND));
         return showtimeMapper.toShowtimeResponse(showTime);
     }
 
     //Create showTime
     public ShowtimeResponse createShowTime(ShowtimeRequest request) {
-        Showtime showTime = showtimeMapper.toShowtime(request);
+        Showtime showtime = showtimeMapper.toShowtime(request);
         Movie movie = movieRepository.findById(request.getMovieId())
                         .orElseThrow(()-> new AppException(ErrorCode.MOVIE_NOT_FOUND));
-        showTime.setMovie(movie);
+        showtime.setMovie(movie);
 
         Auditorium auditorium = auditoriumRepository.findById(request.getAuditoriumId())
                         .orElseThrow(()-> new AppException(ErrorCode.AUDITORIUM_NOT_FOUND));
-        showTime.setAuditorium(auditorium);
+        showtime.setAuditorium(auditorium);
 
         List<Ticket> tickets = auditorium.getSeats().stream()
                 .map(seat -> Ticket.builder()
                         .price(seat.getSeatTypeEnum().getPrice())
                         .available(true)
                         .seat(seat)
-                        .showTime(showTime) // link back
+                        .showtime(showtime) // link back
                         .build()).toList();
-        showTime.setTickets(tickets);
+        showtime.setTickets(tickets);
 
-        showTimeRepository.save(showTime);
-        return showtimeMapper.toShowtimeResponse(showTime);
+        showtimeRepository.save(showtime);
+        return showtimeMapper.toShowtimeResponse(showtime);
     }
 
     //Update showTime
     public ShowtimeResponse updateShowTime(Long id, ShowtimeRequest request) {
-        Showtime showTime = showTimeRepository.findById(id)
+        Showtime showTime = showtimeRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.SEAT_NOT_FOUND));
 
         showtimeMapper.updateShowtime(request, showTime);
@@ -84,17 +82,17 @@ public class ShowTimeService {
                 .orElseThrow(()-> new AppException(ErrorCode.AUDITORIUM_NOT_FOUND));
         showTime.setAuditorium(auditorium);
 
-        showTimeRepository.save(showTime);
+        showtimeRepository.save(showTime);
         return showtimeMapper.toShowtimeResponse(showTime);
     }
 
     //Delete showTime
     public String deleteShowTime(Long id) {
-        if (!showTimeRepository.existsById(id)) {
+        if (!showtimeRepository.existsById(id)) {
             throw new AppException(ErrorCode.SEAT_NOT_FOUND);
         }
 
-        showTimeRepository.deleteById(id);
-        return "Delete show time successfully";
+        showtimeRepository.deleteById(id);
+        return "Delete showtime successfully";
     }
 }

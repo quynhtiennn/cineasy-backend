@@ -23,7 +23,6 @@ public class User extends BaseUUIDEntity  {
     String username;
 
     String password;
-    String email;
 
     @ManyToMany
     List<Role> roles;

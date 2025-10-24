@@ -17,17 +17,13 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCreationRequest {
-    @NotBlank(message = "Username cannot be blank")
-    @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email format")
     String username;
 
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 6, message = "Password must be at least 6 characters")
     String password;
-
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Invalid email format")
-    String email;
 
     List<String> roles;
 
