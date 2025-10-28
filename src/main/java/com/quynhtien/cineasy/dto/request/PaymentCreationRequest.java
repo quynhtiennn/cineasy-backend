@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.UUID;
+
 @Builder
 @Getter
 @Setter
@@ -17,6 +19,6 @@ public class PaymentCreationRequest {
     PaymentMethodEnum method;
 
     @NotBlank(message = "Booking ID is required")
-    String bookingId;
+    UUID bookingId;
 
 }

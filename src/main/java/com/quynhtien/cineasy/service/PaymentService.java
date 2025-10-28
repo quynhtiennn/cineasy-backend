@@ -72,8 +72,8 @@ public class PaymentService {
             throw new AppException(ErrorCode.PAYMENT_CANNOT_BE_SET);
         }
         payment.setStatus(request.getStatus());
-        if (payment.getStatus() == PaymentStatusEnum.SUCCESSFULLY) {
-            payment.getBooking().setBookingStatusEnum(BookingStatusEnum.CONFIRMED);
+        if (payment.getStatus() == PaymentStatusEnum.PAID) {
+            payment.getBooking().setBookingStatusEnum(BookingStatusEnum.PAID);
         }
         else if (payment.getStatus() == PaymentStatusEnum.FAILED ||
                 payment.getStatus() == PaymentStatusEnum.REFUNDED) {

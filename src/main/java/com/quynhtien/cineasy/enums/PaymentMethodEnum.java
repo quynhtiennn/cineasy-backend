@@ -12,6 +12,5 @@ public enum PaymentMethodEnum {
     CREDIT_CARD,
     PAYPAL,
     MOMO,
-    CASH;
 
 }

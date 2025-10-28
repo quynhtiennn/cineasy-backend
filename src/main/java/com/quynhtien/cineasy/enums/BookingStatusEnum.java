@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public enum BookingStatusEnum {
     PENDING,
-    CONFIRMED,
+    PAID,
     CANCELLED,
     ;
 

@@ -33,6 +33,7 @@ public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/auth/login",
+            "/auth/logout",
             "/auth/introspect",
             "/auth/refresh",
             "/users",
@@ -42,7 +43,6 @@ public class SecurityConfig {
     private final String[] PUBLIC_GET_ENDPOINTS = {
             "/movies",
             "/movies/**",
-            "/showtimes/**",
             "/files/download/**",
     };
 

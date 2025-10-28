@@ -22,6 +22,8 @@ public class Booking extends BaseUUIDEntity {
 
     LocalDateTime bookingTime;
     double totalPrice;
+
+    @Enumerated(EnumType.STRING)
     BookingStatusEnum bookingStatusEnum;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)

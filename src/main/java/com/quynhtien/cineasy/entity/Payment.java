@@ -22,6 +22,8 @@ public class Payment extends BaseUUIDEntity {
     PaymentMethodEnum method;
     double amount;
     LocalDateTime paymentDate;
+
+    @Enumerated(EnumType.STRING)
     PaymentStatusEnum status;
 
     @OneToOne

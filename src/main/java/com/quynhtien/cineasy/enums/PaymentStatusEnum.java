@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public enum PaymentStatusEnum {
     PENDING,
-    SUCCESSFULLY,
+    PAID,
     FAILED,
     REFUNDED;
 

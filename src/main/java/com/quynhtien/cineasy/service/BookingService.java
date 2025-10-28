@@ -1,16 +1,19 @@
 package com.quynhtien.cineasy.service;
 
 import com.quynhtien.cineasy.dto.request.BookingRequest;
+import com.quynhtien.cineasy.dto.request.BookingUpdateRequest;
+import com.quynhtien.cineasy.dto.request.PaymentCreationRequest;
 import com.quynhtien.cineasy.dto.response.BookingResponse;
 import com.quynhtien.cineasy.entity.Booking;
 import com.quynhtien.cineasy.entity.Ticket;
 import com.quynhtien.cineasy.entity.User;
 import com.quynhtien.cineasy.enums.BookingStatusEnum;
+import com.quynhtien.cineasy.enums.PaymentMethodEnum;
+import com.quynhtien.cineasy.enums.PaymentStatusEnum;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.BookingMapper;
 import com.quynhtien.cineasy.repository.BookingRepository;
-import com.quynhtien.cineasy.repository.PaymentRepository;
 import com.quynhtien.cineasy.repository.TicketRepository;
 import com.quynhtien.cineasy.repository.UserRepository;
 import lombok.AccessLevel;
@@ -33,7 +36,7 @@ public class BookingService {
     BookingRepository bookingRepository;
     BookingMapper bookingMapper;
     TicketRepository ticketRepository;
-    PaymentRepository paymentRepository;
+    PaymentService paymentService;
     UserRepository userRepository;
 
     //Get all bookings
@@ -43,7 +46,7 @@ public class BookingService {
     }
 
     //Get booking by id
-    public BookingResponse getBooking(String id) {
+    public BookingResponse getBooking(UUID id) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_FOUND));
         return bookingMapper.toBookingResponse(booking);
@@ -79,20 +82,47 @@ public class BookingService {
         });
 
         bookingRepository.save(booking);
+
+        PaymentCreationRequest paymentCreationRequest = PaymentCreationRequest.builder()
+                .bookingId(booking.getId())
+                .method(PaymentMethodEnum.CREDIT_CARD)
+                .build();
+        paymentService.createPayment(paymentCreationRequest);
+
         return bookingMapper.toBookingResponse(booking);
     }
 
     //Update booking
-    public BookingResponse updateBookingStatus(String id, BookingStatusEnum status) {
+    public BookingResponse updateBookingStatus(UUID id, BookingUpdateRequest request) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_FOUND));
         if (booking.getBookingStatusEnum() == BookingStatusEnum.CANCELLED) {
             throw new AppException(ErrorCode.BOOKING_ALREADY_CANCELLED);
         }
-        if (booking.getBookingStatusEnum() == status) {
+
+        if (booking.getBookingStatusEnum() == request.getStatus()) {
             throw new AppException(ErrorCode.BOOKING_CANNOT_BE_SET);
         }
-        booking.setBookingStatusEnum(status);
+
+        if (booking.getBookingStatusEnum() == BookingStatusEnum.PENDING) {
+            if (request.getStatus() == BookingStatusEnum.PAID) {
+                booking.getPayment().setStatus(PaymentStatusEnum.PAID);
+                booking.setBookingStatusEnum(request.getStatus());
+            } else if (request.getStatus() == BookingStatusEnum.CANCELLED) {
+                booking.getPayment().setStatus(PaymentStatusEnum.FAILED);
+                booking.setBookingStatusEnum(request.getStatus());
+            }
+        }
+
+        if (booking.getBookingStatusEnum() == BookingStatusEnum.PAID) {
+            if (request.getStatus() == BookingStatusEnum.CANCELLED) {
+                booking.getPayment().setStatus(PaymentStatusEnum.REFUNDED);
+                booking.setBookingStatusEnum(request.getStatus());
+            } else if (request.getStatus() == BookingStatusEnum.PENDING) {
+                throw new AppException(ErrorCode.BOOKING_CANNOT_BE_SET);
+            }
+        }
+
         if (booking.getBookingStatusEnum() == BookingStatusEnum.CANCELLED) {
             booking.getTickets().forEach(ticket -> ticket.setAvailable(true));
         }
@@ -102,10 +132,13 @@ public class BookingService {
     }
 
     //Delete booking
-    public String deleteBooking(String id) {
-        if (!bookingRepository.existsById(id)) {
-            throw new AppException(ErrorCode.BOOKING_NOT_FOUND);
-        }
+    public String deleteBooking(UUID id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_FOUND));
+
+        List<Ticket> tickets = booking.getTickets();
+        tickets.forEach(ticket -> ticket.setAvailable(true));
+        ticketRepository.saveAll(tickets);
 
         bookingRepository.deleteById(id);
         return "Delete booking successfully";

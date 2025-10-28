@@ -24,6 +24,7 @@ public class Seat extends BaseLongIdEntity {
     int seatNumber;
 
     @JsonProperty("seatType")
+    @Enumerated(EnumType.STRING)
     SeatTypeEnum seatTypeEnum;
 
     @ManyToOne

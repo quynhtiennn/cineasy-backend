@@ -52,6 +52,7 @@ public enum ErrorCode {
     BOOKING_NOT_FOUND(11001, "Booking not found", HttpStatus.BAD_REQUEST),
     BOOKING_ALREADY_CANCELLED(11002, "Booking already cancelled", HttpStatus.BAD_REQUEST),
     BOOKING_CANNOT_BE_SET(11003, "Booking cannot be set", HttpStatus.BAD_REQUEST),
+    BOOKING_STATUS_INVALID(11004, "Booking cannot be set", HttpStatus.BAD_REQUEST),
 
     //payment error codes 12001 - 12999
     PAYMENT_NOT_FOUND(12001, "Payment not found", HttpStatus.BAD_REQUEST),

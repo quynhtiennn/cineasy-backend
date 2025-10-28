@@ -1,6 +1,7 @@
 package com.quynhtien.cineasy.controller;
 
 import com.quynhtien.cineasy.dto.request.BookingRequest;
+import com.quynhtien.cineasy.dto.request.BookingUpdateRequest;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
 import com.quynhtien.cineasy.dto.response.BookingResponse;
 import com.quynhtien.cineasy.service.BookingService;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -31,7 +33,7 @@ public class BookingController {
 
     //Get booking by id
     @GetMapping("/{id}")
-    public ApiResponse<BookingResponse> findAll(@PathVariable String id) {
+    public ApiResponse<BookingResponse> findAll(@PathVariable UUID id) {
         return ApiResponse.<BookingResponse>builder()
                 .result(bookingService.getBooking(id))
                 .build();
@@ -46,18 +48,17 @@ public class BookingController {
     }
 
     //Update booking
-    /*@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ApiResponse<BookingResponse> updateBooking(@PathVariable String id, @RequestBody @Valid BookingRequest request) {
+    public ApiResponse<BookingResponse> updateBooking(@PathVariable UUID id, @RequestBody @Valid BookingUpdateRequest request) {
         return ApiResponse.<BookingResponse>builder()
-                .result(bookingService.updateBooking(id, request))
+                .result(bookingService.updateBookingStatus(id, request))
                 .build();
-    }*/
+    }
 
     //Delete booking
     /*@PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ApiResponse<String> deleteBooking(@PathVariable String id) {
+    public ApiResponse<String> deleteBooking(@PathVariable UUID id) {
         return ApiResponse.<String>builder()
                 .result(bookingService.deleteBooking(id))
                 .build();
