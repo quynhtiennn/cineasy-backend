@@ -117,6 +117,13 @@
 			<version>2.20.43</version>
 		</dependency>
 
+		<!--Azure-->
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-storage-blob</artifactId>
+			<version>12.26.1</version>
+		</dependency>
+
 
 	</dependencies>
 

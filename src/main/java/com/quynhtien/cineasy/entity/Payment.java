@@ -19,7 +19,9 @@ import java.time.LocalDateTime;
 @Entity
 public class Payment extends BaseUUIDEntity {
 
+    @Enumerated(EnumType.STRING)
     PaymentMethodEnum method;
+
     double amount;
     LocalDateTime paymentDate;
 
