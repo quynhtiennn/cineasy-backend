@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -35,7 +34,7 @@ public class FileService {
 
     public List<FileInfoResponse> getAllFileInfo() {
         List<FileInfo> fileInfos = fileInfoRepository.findAll();
-        return fileInfos.stream().map(fileInfoMapper::toFileInfoResponse).collect(Collectors.toList());
+        return fileInfos.stream().map(fileInfoMapper::toFileInfoResponse).toList();
     }
 
     public FileInfoResponse uploadFile(MultipartFile file) throws IOException {
@@ -53,7 +52,7 @@ public class FileService {
         FileInfo fileInfo = fileInfoRepository.findById(fileName).orElseThrow(
                 () -> new AppException(ErrorCode.FILE_NOT_FOUND));
 
-        Resource file =fileRepository.downloadFile(fileName);
+        Resource file = fileRepository.downloadFile(fileName);
 
         return new FileResponse(fileInfo.getContentType(), file);
     }
