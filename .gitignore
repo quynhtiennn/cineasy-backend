@@ -37,3 +37,6 @@ application.properties
 
 ### sample files ###
 httpCookieSample.text
+
+### local stack ###
+localstack/
