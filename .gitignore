@@ -34,6 +34,8 @@ build/
 
 ### application config ###
 application.properties
+application-dev.properties
+application-prod.properties
 
 ### sample files ###
 httpCookieSample.text
