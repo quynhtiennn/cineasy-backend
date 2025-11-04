@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -31,16 +32,10 @@ public class UserController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/v2")
-    public List<UserResponse> findAll2() {
-        return userService.getUsers();
-    }
-
     //Get user by id
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
-    public ApiResponse<UserResponse> findUserById(@PathVariable String id) {
+    public ApiResponse<UserResponse> findUserById(@PathVariable UUID id) {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.getUser(id))
                 .build();
@@ -56,8 +51,8 @@ public class UserController {
 
     //Create user
     @PostMapping
-    public ApiResponse<AuthenticationResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
-        return ApiResponse.<AuthenticationResponse>builder()
+    public ApiResponse<String> createUser(@RequestBody @Valid UserCreationRequest request) {
+        return ApiResponse.<String>builder()
                 .result(userService.createUser(request))
                 .build();
     }
@@ -65,7 +60,7 @@ public class UserController {
     //Update user
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.claims['userId']")
     @PutMapping("/{id}")
-    public ApiResponse<UserResponse> updateUser(@PathVariable String id, @RequestBody @Valid UserUpdateRequest request) {
+    public ApiResponse<UserResponse> updateUser(@PathVariable UUID id, @RequestBody @Valid UserUpdateRequest request) {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.updateUser(id, request))
                 .build();
@@ -74,7 +69,7 @@ public class UserController {
     //Delete user
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.claims['userId'] or hasAuthority('DELETE_USER')")
     @DeleteMapping("/{id}")
-    public ApiResponse<String> deleteUser(@PathVariable String id) {
+    public ApiResponse<String> deleteUser(@PathVariable UUID id) {
         return ApiResponse.<String>builder()
                 .result(userService.deleteUser(id))
                 .build();

@@ -1,5 +1,6 @@
 package com.quynhtien.cineasy.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -39,5 +40,6 @@ public class MovieRequest {
     String director;
 
     @NotBlank(message = "Cast is required")
-    String cast;
+    @JsonProperty("cast")
+    String actors;
 }

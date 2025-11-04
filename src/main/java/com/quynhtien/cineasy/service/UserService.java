@@ -5,12 +5,14 @@ import com.quynhtien.cineasy.dto.request.UserCreationRequest;
 import com.quynhtien.cineasy.dto.request.UserUpdateRequest;
 import com.quynhtien.cineasy.dto.response.AuthenticationResponse;
 import com.quynhtien.cineasy.dto.response.UserResponse;
+import com.quynhtien.cineasy.entity.EmailVerificationToken;
 import com.quynhtien.cineasy.entity.Role;
 import com.quynhtien.cineasy.entity.User;
 import com.quynhtien.cineasy.enums.RoleEnum;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.UserMapper;
+import com.quynhtien.cineasy.repository.EmailVerificationTokenRepository;
 import com.quynhtien.cineasy.repository.RoleRepository;
 import com.quynhtien.cineasy.repository.UserRepository;
 import lombok.AccessLevel;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -36,6 +39,8 @@ public class UserService {
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
     AuthenticationService authenticationService;
+    EmailVerificationTokenService emailVerificationTokenService;
+    EmailService emailService;
 
     //Get all users
     public List<UserResponse> getUsers() {
@@ -47,7 +52,7 @@ public class UserService {
     }
 
     //Get user by id
-    public UserResponse getUser(String id) {
+    public UserResponse getUser(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toUserResponse(user);
@@ -64,7 +69,7 @@ public class UserService {
     }
 
     //Create user
-    public AuthenticationResponse createUser(UserCreationRequest request) {
+    public String createUser(UserCreationRequest request) {
         User user = userMapper.toUser(request);
 
         //encode password
@@ -83,12 +88,16 @@ public class UserService {
         user.setRoles(roles);
 
         userRepository.save(user);
-        return authenticationService.login(
-                new AuthenticationRequest(request.getUsername(), request.getPassword()));
+
+        EmailVerificationToken token = emailVerificationTokenService.createToken(user);
+
+        emailService.sendVerificationEmail(user.getUsername(), token.getId());
+
+        return "Email sent!";
     }
 
     //Update user
-    public UserResponse updateUser(String id, UserUpdateRequest request) {
+    public UserResponse updateUser(UUID id, UserUpdateRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
@@ -105,7 +114,7 @@ public class UserService {
     }
 
     //Delete user
-    public String deleteUser(String id) {
+    public String deleteUser(UUID id) {
         if (!userRepository.existsById(id)) {
             throw new AppException(ErrorCode.USER_NOT_FOUND);
         }

@@ -35,6 +35,7 @@ public class ApplicationInitConfig {
                         .username("admin")
                         .password(passwordEncoder.encode("12345678"))
                         .roles(List.of(role))
+                        .enabled(true)
                         .build();
                 userRepository.save(user);
                 log.info("Created admin user with username 'admin' with authority ADMIN");

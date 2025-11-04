@@ -23,4 +23,6 @@ public class UserResponse {
 
     @JsonProperty("bookings")
     List<BookingResponse> bookingResponses;
+
+    boolean enabled;
 }

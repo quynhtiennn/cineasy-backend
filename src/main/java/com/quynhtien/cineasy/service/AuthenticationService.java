@@ -7,14 +7,17 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.quynhtien.cineasy.dto.request.ResendVerificationEmailRequest;
 import com.quynhtien.cineasy.dto.request.TokenRequest;
 import com.quynhtien.cineasy.dto.request.AuthenticationRequest;
 import com.quynhtien.cineasy.dto.response.IntrospectResponse;
 import com.quynhtien.cineasy.dto.response.AuthenticationResponse;
+import com.quynhtien.cineasy.entity.EmailVerificationToken;
 import com.quynhtien.cineasy.entity.LoggedOutToken;
 import com.quynhtien.cineasy.entity.User;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
+import com.quynhtien.cineasy.repository.EmailVerificationTokenRepository;
 import com.quynhtien.cineasy.repository.LoggedOutTokenRepository;
 import com.quynhtien.cineasy.repository.UserRepository;
 import lombok.AccessLevel;
@@ -50,6 +53,9 @@ public class AuthenticationService {
     PasswordEncoder passwordEncoder;
     UserRepository userRepository;
     LoggedOutTokenRepository loggedOutTokenRepository;
+    EmailVerificationTokenService emailVerificationTokenService;
+    EmailService emailService;
+    EmailVerificationTokenRepository emailVerificationTokenRepository;
 
     //login
     public AuthenticationResponse login(AuthenticationRequest request) {
@@ -60,9 +66,14 @@ public class AuthenticationService {
         if (!authenticated) {
             throw new AppException(ErrorCode.INVALID_USER_INFO);
         }
-
-        String token = generateToken(user);
+        String token;
+        if (user.isEnabled()) {
+            token = generateToken(user);
+        } else {
+            token = null;
+        }
         return AuthenticationResponse.builder()
+                .enabled(user.isEnabled())
                 .token(token)
                 .build();
     }
@@ -126,6 +137,34 @@ public class AuthenticationService {
         }
     }
 
+    //verify Email token
+    public AuthenticationResponse verifyEmailVerificationToken(TokenRequest request) {
+        User user = emailVerificationTokenService.verifyToken(UUID.fromString(request.getToken()));
+        String newAuthToken = generateToken(user);
+        return AuthenticationResponse.builder()
+                .enabled(user.isEnabled())
+                .token(newAuthToken)
+                .build();
+    }
+
+    //resend verification email
+    public String resendEmailVerificationToken(ResendVerificationEmailRequest request) {
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        if (user.isEnabled()) {
+            throw new AppException(ErrorCode.INVALID_REQUEST);}
+
+        EmailVerificationToken oldToken = emailVerificationTokenRepository.findByUser(user);
+        if (oldToken != null) {
+            emailVerificationTokenRepository.delete(oldToken);
+        }
+
+        EmailVerificationToken newToken = emailVerificationTokenService.createToken(user);
+        emailService.sendVerificationEmail(user.getUsername(), newToken.getId());
+        return "Email sent!";
+    }
+
     public SignedJWT verifyToken(String token, boolean isRefresh) {
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
@@ -162,7 +201,6 @@ public class AuthenticationService {
             throw new AppException(ErrorCode.INVALID_TOKEN);
         }
     }
-
 
 
     private String generateToken(User user) {

@@ -12,10 +12,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class AuthenticationRequest {
-    @NotBlank(message = "Username must not be null")
+public class ResendVerificationEmailRequest {
+    @NotBlank(message = "Email must not be null")
     String username;
-    @NotBlank(message = "Password must not be null")
-    String password;
-
 }

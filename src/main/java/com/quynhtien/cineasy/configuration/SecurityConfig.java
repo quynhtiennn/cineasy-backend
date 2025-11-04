@@ -31,19 +31,16 @@ public class SecurityConfig {
     @NonFinal
     private String feUrl;
 
-    private final String[] PUBLIC_ENDPOINTS = {
-            "/auth/login",
-            "/auth/logout",
-            "/auth/introspect",
-            "/auth/refresh",
+    private final String[] PUBLIC_POST_ENDPOINTS = {
+            "/auth/**",
             "/users",
-
     };
 
     private final String[] PUBLIC_GET_ENDPOINTS = {
             "/movies",
             "/movies/**",
             "/files/download/**",
+            "/test-email",
     };
 
 
@@ -55,7 +52,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2

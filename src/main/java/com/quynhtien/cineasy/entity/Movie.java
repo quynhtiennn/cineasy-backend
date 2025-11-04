@@ -29,7 +29,7 @@ public class Movie extends BaseLongIdEntity {
     String posterUrl;
     String backdropUrl;
     String director;
-    String cast;
+    String actors;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     @JsonManagedReference

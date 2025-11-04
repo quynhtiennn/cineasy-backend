@@ -17,6 +17,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder
 @Entity
+@Table(name = "users")
 public class User extends BaseUUIDEntity  {
 
     @Column(unique = true, nullable = false)
@@ -30,5 +31,7 @@ public class User extends BaseUUIDEntity  {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     List<Booking> bookings;
+
+    boolean enabled = false;
 
 }

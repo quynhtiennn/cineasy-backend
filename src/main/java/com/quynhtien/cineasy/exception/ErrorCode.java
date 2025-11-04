@@ -61,6 +61,8 @@ public enum ErrorCode {
     //file error codes 13001 - 13999
     FILE_NOT_FOUND(13001, "File not found", HttpStatus.BAD_REQUEST),
 
+    //Email token error codes 14001 - 14999
+    INVALID_EMAIL_VERIFICATION(14001, "Email verification failed", HttpStatus.BAD_REQUEST)
     ;
     int code;
     String message;
