@@ -62,7 +62,11 @@ public enum ErrorCode {
     FILE_NOT_FOUND(13001, "File not found", HttpStatus.BAD_REQUEST),
 
     //Email token error codes 14001 - 14999
-    INVALID_EMAIL_VERIFICATION(14001, "Email verification failed", HttpStatus.BAD_REQUEST)
+    INVALID_EMAIL_VERIFICATION(14001, "Email verification failed", HttpStatus.BAD_REQUEST),
+
+    //Reset password error codes 15001 - 15999
+    INVALID_RESET_PASSWORD_TOKEN(14002, "Reset password token is invalid or expired", HttpStatus.BAD_REQUEST),
+
     ;
     int code;
     String message;

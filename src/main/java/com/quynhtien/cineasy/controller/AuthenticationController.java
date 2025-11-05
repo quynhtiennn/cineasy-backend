@@ -1,8 +1,6 @@
 package com.quynhtien.cineasy.controller;
 
-import com.quynhtien.cineasy.dto.request.ResendVerificationEmailRequest;
-import com.quynhtien.cineasy.dto.request.TokenRequest;
-import com.quynhtien.cineasy.dto.request.AuthenticationRequest;
+import com.quynhtien.cineasy.dto.request.*;
 import com.quynhtien.cineasy.dto.response.ApiResponse;
 import com.quynhtien.cineasy.dto.response.IntrospectResponse;
 import com.quynhtien.cineasy.dto.response.AuthenticationResponse;
@@ -45,23 +43,45 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh")
-    public ApiResponse<AuthenticationResponse> refresh(@RequestBody TokenRequest request) {
+    public ApiResponse<AuthenticationResponse> refresh(@RequestBody @Valid TokenRequest request) {
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(authenticationService.refreshToken(request))
                 .build();
     }
 
-    @PostMapping("/verifyEmail")
-    public ApiResponse<AuthenticationResponse> verifyEmail(@RequestBody TokenRequest request) {
+    @PostMapping("/verify-email")
+    public ApiResponse<AuthenticationResponse> verifyEmail(@RequestBody @Valid TokenRequest request) {
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(authenticationService.verifyEmailVerificationToken(request))
                 .build();
     }
 
-    @PostMapping("/resendVerificationEmail")
+    @PostMapping("/resend-verification-email")
     public ApiResponse<String> verifyEmail(@RequestBody @Valid ResendVerificationEmailRequest request) {
         return ApiResponse.<String>builder()
                 .result(authenticationService.resendEmailVerificationToken(request))
                 .build();
     }
+
+    @PostMapping("/forgot-password")
+    public ApiResponse<String> forgotPassword(@RequestBody @Valid ForgotPasswordRequest request) {
+        return ApiResponse.<String>builder()
+                .result(authenticationService.sendResetPasswordEmail(request))
+                .build();
+    }
+
+    @PostMapping("/verify-password-reset-token")
+    public ApiResponse<Boolean> verifyPasswordResetToken(@RequestBody @Valid TokenRequest request) {
+        return ApiResponse.<Boolean>builder()
+                .result(authenticationService.verifyPasswordResetToken(request))
+                .build();
+    }
+
+    @PostMapping("/reset-password")
+    public ApiResponse<String> resetPassword(@RequestBody @Valid ResetPasswordRequest request) {
+        return ApiResponse.<String>builder()
+                .result(authenticationService.resetPassword(request))
+                .build();
+    }
+
 }

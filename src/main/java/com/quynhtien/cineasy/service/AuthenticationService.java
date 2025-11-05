@@ -7,18 +7,18 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.quynhtien.cineasy.dto.request.ResendVerificationEmailRequest;
-import com.quynhtien.cineasy.dto.request.TokenRequest;
-import com.quynhtien.cineasy.dto.request.AuthenticationRequest;
+import com.quynhtien.cineasy.dto.request.*;
 import com.quynhtien.cineasy.dto.response.IntrospectResponse;
 import com.quynhtien.cineasy.dto.response.AuthenticationResponse;
 import com.quynhtien.cineasy.entity.EmailVerificationToken;
 import com.quynhtien.cineasy.entity.LoggedOutToken;
+import com.quynhtien.cineasy.entity.ResetPasswordToken;
 import com.quynhtien.cineasy.entity.User;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.repository.EmailVerificationTokenRepository;
 import com.quynhtien.cineasy.repository.LoggedOutTokenRepository;
+import com.quynhtien.cineasy.repository.ResetPasswordTokenRepository;
 import com.quynhtien.cineasy.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +56,8 @@ public class AuthenticationService {
     EmailVerificationTokenService emailVerificationTokenService;
     EmailService emailService;
     EmailVerificationTokenRepository emailVerificationTokenRepository;
+    ResetPasswordTokenService resetPasswordTokenService;
+    ResetPasswordTokenRepository resetPasswordTokenRepository;
 
     //login
     public AuthenticationResponse login(AuthenticationRequest request) {
@@ -163,6 +165,31 @@ public class AuthenticationService {
         EmailVerificationToken newToken = emailVerificationTokenService.createToken(user);
         emailService.sendVerificationEmail(user.getUsername(), newToken.getId());
         return "Email sent!";
+    }
+
+    //send reset password email
+    public String sendResetPasswordEmail(ForgotPasswordRequest request) {
+        User user = userRepository.findByUsername(request.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        ResetPasswordToken oldToken = resetPasswordTokenRepository.findByUser(user);
+        if (oldToken != null) {
+            resetPasswordTokenRepository.delete(oldToken);
+        }
+
+        ResetPasswordToken newToken = resetPasswordTokenService.createToken(user);
+        emailService.sendResetPasswordEmail(user.getUsername(), newToken.getId());
+        return "Email sent!";
+    }
+
+    //verify reset password token
+    public boolean verifyPasswordResetToken(TokenRequest request) {
+        return resetPasswordTokenService.verifyToken(UUID.fromString(request.getToken()));
+    }
+
+    //reset password
+    public String resetPassword(ResetPasswordRequest request) {
+        return resetPasswordTokenService.resetPassword(request);
     }
 
     public SignedJWT verifyToken(String token, boolean isRefresh) {

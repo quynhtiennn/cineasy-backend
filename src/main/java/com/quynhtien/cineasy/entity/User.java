@@ -34,4 +34,10 @@ public class User extends BaseUUIDEntity  {
 
     boolean enabled = false;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    EmailVerificationToken emailVerificationToken;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    EmailVerificationToken resetPasswordToken;
+
 }
