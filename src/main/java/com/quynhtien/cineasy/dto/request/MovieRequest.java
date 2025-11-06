@@ -1,6 +1,6 @@
 package com.quynhtien.cineasy.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.quynhtien.cineasy.enums.MovieStatusEnum;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -41,4 +41,7 @@ public class MovieRequest {
 
     @NotBlank(message = "Actors are required")
     String actors;
+
+    @NotBlank(message = "Status are required")
+    MovieStatusEnum status;
 }
