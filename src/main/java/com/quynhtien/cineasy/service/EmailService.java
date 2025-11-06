@@ -22,6 +22,10 @@ public class EmailService {
     @NonFinal
     String frontendUrl;
 
+    @Value("${mail.images.path}")
+    @NonFinal
+    String imagePath;
+
     public void sendVerificationEmail(String to, UUID token) {
         String verifyUrl = frontendUrl + "/verify-email?token=" + token;
 
@@ -40,13 +44,13 @@ public class EmailService {
                         <hr style="margin-top:30px; border:none; border-top:1px solid #ddd;">
                         <p style="font-size: 12px; color: #777;">— The Cineasy Team 🍿</p>
                         <div style="text-align:center; margin-bottom:20px;">
-                        <img src="https://cineasyimages.blob.core.windows.net/cineasy-images/cineasy-email.jpg" alt="Cineasy Logo"\s
+                        <img src="%s" alt="Cineasy Logo"\s
                         style="max-width:500px; height:auto; border-radius:4px;"/>
                         </div>
                     </div>
                 </body>
             </html>
-           \s""".formatted(verifyUrl);
+           \s""".formatted(verifyUrl, imagePath);
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -87,14 +91,14 @@ public class EmailService {
                         <p style="font-size: 12px; color: #777;">— The Cineasy Team 🍿</p>
             
                         <div style="text-align:center; margin-top:20px;">
-                            <img src="https://cineasyimages.blob.core.windows.net/cineasy-images/cineasy-email.jpg" 
+                            <img src="%s" 
                                  alt="Cineasy Logo"
                                  style="max-width:500px; height:auto; border-radius:4px;"/>
                         </div>
                     </div>
                 </body>
             </html>
-            """.formatted(resetUrl);
+            """.formatted(resetUrl, imagePath);
 
         try {
             MimeMessage message = mailSender.createMimeMessage();

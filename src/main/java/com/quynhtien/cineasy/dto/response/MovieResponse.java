@@ -25,7 +25,6 @@ public class MovieResponse {
     String backdropUrl;
     String director;
 
-    @JsonProperty("cast")
     String actors;
 
     @JsonProperty("showtimeSummaries")

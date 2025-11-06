@@ -4,6 +4,7 @@ import com.quynhtien.cineasy.dto.request.MovieRequest;
 import com.quynhtien.cineasy.dto.response.FileInfoResponse;
 import com.quynhtien.cineasy.dto.response.MovieResponse;
 import com.quynhtien.cineasy.entity.Movie;
+import com.quynhtien.cineasy.enums.MovieStatusEnum;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.MovieMapper;
@@ -29,7 +30,9 @@ public class MovieService {
 
     //Get all movies
     public List<MovieResponse> getMovies() {
-        return movieRepository.findAll().stream()
+        List<Movie> movies = movieRepository
+                .findByStatus(MovieStatusEnum.ACTIVE);
+        return movies.stream()
                 .map(movieMapper::toMovieResponse).toList();
     }
 
@@ -39,6 +42,8 @@ public class MovieService {
                 .orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_FOUND));
         return movieMapper.toMovieResponse(movie);
     }
+
+
 
     //Create movie
     public MovieResponse createMovie(MovieRequest request) {

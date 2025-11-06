@@ -39,7 +39,6 @@ public class MovieRequest {
     @NotBlank(message = "Director is required")
     String director;
 
-    @NotBlank(message = "Cast is required")
-    @JsonProperty("cast")
+    @NotBlank(message = "Actors are required")
     String actors;
 }
