@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @Service
@@ -27,6 +29,7 @@ public class EmailService {
     String imagePath;
 
     public void sendVerificationEmail(String to, UUID token) {
+
         String verifyUrl = frontendUrl + "/verify-email?token=" + token;
 
         String htmlContent = """
@@ -52,21 +55,23 @@ public class EmailService {
             </html>
            \s""".formatted(verifyUrl, imagePath);
 
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            try {
+                MimeMessage message = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+                helper.setTo(to);
+                helper.setSubject("Confirm your email");
+                helper.setText(htmlContent, true); // true = HTML
+                mailSender.send(message);
 
-            helper.setTo(to);
-            helper.setSubject("Confirm your email");
-            helper.setText(htmlContent, true); // true = HTML
+            } catch (Exception e) {
+                log.error("Error while sending email", e);
+                throw new RuntimeException(e);
+            }
 
-            mailSender.send(message);
-        } catch (MessagingException e) {
-            throw new RuntimeException("Failed to send email", e);
-        }
+
     }
 
-    public void sendResetPasswordEmail(String to, UUID token) {
+    public void sendResetPasswordEmail(String to, UUID token) throws MessagingException {
         String resetUrl = frontendUrl + "/reset-password?token=" + token;
 
         String htmlContent = """
@@ -100,18 +105,23 @@ public class EmailService {
             </html>
             """.formatted(resetUrl, imagePath);
 
+
+        log.info("0");
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
+            log.info("1");
             helper.setTo(to);
             helper.setSubject("Reset your password");
             helper.setText(htmlContent, true); // true = HTML
-
+            log.info("2");
             mailSender.send(message);
+
         } catch (MessagingException e) {
-            throw new RuntimeException("Failed to send email", e);
+            throw new RuntimeException(e);
         }
+
+
     }
 }
 

@@ -71,6 +71,11 @@ public class UserService {
     //Create user
     public String createUser(UserCreationRequest request) {
         User user = userMapper.toUser(request);
+log.info("Create user request by: {}", user.getUsername());
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
+        }
 
         //encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));

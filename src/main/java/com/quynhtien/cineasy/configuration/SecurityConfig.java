@@ -37,6 +37,7 @@ public class SecurityConfig {
     };
 
     private final String[] PUBLIC_GET_ENDPOINTS = {
+
             "/movies",
             "/movies/**",
             "/files/download/**",

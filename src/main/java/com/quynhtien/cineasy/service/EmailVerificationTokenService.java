@@ -37,7 +37,7 @@ public class EmailVerificationTokenService {
         }
         User user = token.getUser();
         user.setEnabled(true);
-        emailVerificationTokenRepository.delete(token);
+        user.setEmailVerificationToken(null);
         return user;
     }
 

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
     AuthenticationService authenticationService;
 
+
     @PostMapping("/login")
     public ApiResponse<AuthenticationResponse> login(@RequestBody @Valid AuthenticationRequest request) {
         log.info("Login attempt for user: {}", request.getUsername());

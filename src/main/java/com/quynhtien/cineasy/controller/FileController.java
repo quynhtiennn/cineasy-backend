@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -33,7 +34,7 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ApiResponse<FileInfoResponse> uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
+    public ApiResponse<FileInfoResponse> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         return ApiResponse.<FileInfoResponse>builder()
                 .result(fileService.uploadFile(file))
                 .build();

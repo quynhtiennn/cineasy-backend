@@ -20,6 +20,7 @@ import com.quynhtien.cineasy.repository.EmailVerificationTokenRepository;
 import com.quynhtien.cineasy.repository.LoggedOutTokenRepository;
 import com.quynhtien.cineasy.repository.ResetPasswordTokenRepository;
 import com.quynhtien.cineasy.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -151,19 +152,19 @@ public class AuthenticationService {
 
     //resend verification email
     public String resendEmailVerificationToken(ResendVerificationEmailRequest request) {
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByUsername(request.getEmail())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-
         if (user.isEnabled()) {
             throw new AppException(ErrorCode.INVALID_REQUEST);}
-
         EmailVerificationToken oldToken = emailVerificationTokenRepository.findByUser(user);
         if (oldToken != null) {
-            emailVerificationTokenRepository.delete(oldToken);
+            user.setEmailVerificationToken(null);
         }
 
         EmailVerificationToken newToken = emailVerificationTokenService.createToken(user);
+
         emailService.sendVerificationEmail(user.getUsername(), newToken.getId());
+
         return "Email sent!";
     }
 
@@ -174,11 +175,15 @@ public class AuthenticationService {
 
         ResetPasswordToken oldToken = resetPasswordTokenRepository.findByUser(user);
         if (oldToken != null) {
-            resetPasswordTokenRepository.delete(oldToken);
+            user.setEmailVerificationToken(null);
         }
 
         ResetPasswordToken newToken = resetPasswordTokenService.createToken(user);
-        emailService.sendResetPasswordEmail(user.getUsername(), newToken.getId());
+        try {
+            emailService.sendResetPasswordEmail(user.getUsername(), newToken.getId());
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
         return "Email sent!";
     }
 

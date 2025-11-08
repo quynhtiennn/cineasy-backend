@@ -14,5 +14,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class ResendVerificationEmailRequest {
     @NotBlank(message = "Email must not be null")
-    String username;
+    String email;
 }

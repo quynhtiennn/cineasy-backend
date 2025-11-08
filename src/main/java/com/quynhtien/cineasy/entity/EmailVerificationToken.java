@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 public class EmailVerificationToken extends BaseUUIDEntity {
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "users_id", unique = true)
     User user;
 
     LocalDateTime expiryTime;
-
 
 }

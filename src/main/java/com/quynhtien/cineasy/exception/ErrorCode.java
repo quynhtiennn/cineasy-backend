@@ -19,6 +19,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(2001, "User not found", HttpStatus.BAD_REQUEST),
     INVALID_USER_INFO(2002, "Invalid user information", HttpStatus.BAD_REQUEST),
     INVALID_REQUEST(2003, "Invalid request", HttpStatus.BAD_REQUEST),
+    USER_ALREADY_EXISTS(2004,"Username already exists", HttpStatus.BAD_REQUEST ),
 
     //authentication error codes 3001 - 3999
     GENERATE_TOKEN_ERROR(3001, "Error generating token", HttpStatus.INTERNAL_SERVER_ERROR),

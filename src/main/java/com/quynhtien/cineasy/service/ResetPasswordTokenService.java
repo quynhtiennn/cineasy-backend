@@ -1,12 +1,10 @@
 package com.quynhtien.cineasy.service;
 
 import com.quynhtien.cineasy.dto.request.ResetPasswordRequest;
-import com.quynhtien.cineasy.entity.EmailVerificationToken;
 import com.quynhtien.cineasy.entity.ResetPasswordToken;
 import com.quynhtien.cineasy.entity.User;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
-import com.quynhtien.cineasy.repository.EmailVerificationTokenRepository;
 import com.quynhtien.cineasy.repository.ResetPasswordTokenRepository;
 import com.quynhtien.cineasy.repository.UserRepository;
 import lombok.AccessLevel;
@@ -53,8 +51,8 @@ public class ResetPasswordTokenService {
         }
         User user = token.getUser();
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setEmailVerificationToken(null);
         userRepository.save(user);
-        resetPasswordTokenRepository.delete(token);
         return "Password reset successfully";
     }
 
