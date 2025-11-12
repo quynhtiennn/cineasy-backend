@@ -19,7 +19,7 @@ import java.util.Objects;
 public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     ResponseEntity<ApiResponse> handleRuntimeException(RuntimeException ex) {
-        log.error("Runtime Exception: " ,ex.getMessage());
+        log.error("Runtime Exception: {}" ,ex.getMessage());
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
         ApiResponse response = ApiResponse.builder()
                 .code(errorCode.getCode())
@@ -57,66 +57,4 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
     }
 
-    /*@ExceptionHandler(DataIntegrityViolationException.class)
-    ResponseEntity<ApiResponse> handleAppException(DataIntegrityViolationException ex) {
-        ErrorCode errorCode = ErrorCode.INVALID_REQUEST;
-        log.error("Data Exception: " ,ex.getMostSpecificCause().getMessage());
-        ApiResponse response = ApiResponse.builder()
-                .code(errorCode.getCode())
-                .message("Data Exception: " + errorCode.getMessage())
-                .build();
-        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
-    }
-
-    @ExceptionHandler(AuthorizationDeniedException.class)
-    ResponseEntity<ApiResponse> handleAppException(AuthorizationDeniedException ex) {
-        ErrorCode errorCode = ErrorCode.UNAUTHENTICATED;
-        ApiResponse response = ApiResponse.builder()
-                .code(errorCode.getCode())
-                .message(errorCode.getMessage())
-                .build();
-        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    ResponseEntity<ApiResponse> handleAppException(HttpMessageNotReadableException ex) {
-        ErrorCode errorCode = ErrorCode.PARSE_INFO_ERROR;
-        log.error("Parse Exception: " + ex.getMostSpecificCause().getMessage());
-        ApiResponse response = ApiResponse.builder()
-                .code(errorCode.getCode())
-                .message("Parse Exception: " + errorCode.getMessage())
-                .build();
-        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    ResponseEntity<ApiResponse> handleAppException(ConstraintViolationException ex) {
-        ErrorCode errorCode = ErrorCode.INVALID_REQUEST;
-
-        // get the first violation
-        String errorMessage = ex.getConstraintViolations()
-                .stream()
-                .map(ConstraintViolation::getMessage)
-                .findFirst()
-                .orElse("Validation failed");
-
-        log.error("Constraint Violation Exception: {}", errorMessage);
-
-        ApiResponse response = ApiResponse.builder()
-                .code(errorCode.getCode())
-                .message("Constraint Violation Exception: " + errorMessage)
-                .build();
-        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<ApiResponse> handleAppException(IllegalArgumentException ex) {
-        ErrorCode errorCode = ErrorCode.INVALID_REQUEST;
-        log.error("Exception: " + ex.getMessage());
-        ApiResponse response = ApiResponse.builder()
-                .code(errorCode.getCode())
-                .message(errorCode.getMessage())
-                .build();
-        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(response);
-    }*/
 }

@@ -181,7 +181,7 @@ public class AuthenticationService {
         ResetPasswordToken newToken = resetPasswordTokenService.createToken(user);
         try {
             emailService.sendResetPasswordEmail(user.getUsername(), newToken.getId());
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return "Email sent!";
