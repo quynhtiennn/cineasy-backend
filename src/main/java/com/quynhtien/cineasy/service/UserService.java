@@ -1,9 +1,7 @@
 package com.quynhtien.cineasy.service;
 
-import com.quynhtien.cineasy.dto.request.AuthenticationRequest;
 import com.quynhtien.cineasy.dto.request.UserCreationRequest;
 import com.quynhtien.cineasy.dto.request.UserUpdateRequest;
-import com.quynhtien.cineasy.dto.response.AuthenticationResponse;
 import com.quynhtien.cineasy.dto.response.UserResponse;
 import com.quynhtien.cineasy.entity.EmailVerificationToken;
 import com.quynhtien.cineasy.entity.Role;
@@ -12,7 +10,6 @@ import com.quynhtien.cineasy.enums.RoleEnum;
 import com.quynhtien.cineasy.exception.AppException;
 import com.quynhtien.cineasy.exception.ErrorCode;
 import com.quynhtien.cineasy.mapper.UserMapper;
-import com.quynhtien.cineasy.repository.EmailVerificationTokenRepository;
 import com.quynhtien.cineasy.repository.RoleRepository;
 import com.quynhtien.cineasy.repository.UserRepository;
 import lombok.AccessLevel;
@@ -24,8 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +33,6 @@ public class UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
-    AuthenticationService authenticationService;
     EmailVerificationTokenService emailVerificationTokenService;
     EmailService emailService;
 
