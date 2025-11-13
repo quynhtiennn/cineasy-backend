@@ -42,6 +42,6 @@ public class MovieRequest {
     @NotBlank(message = "Actors are required")
     String actors;
 
-    @NotBlank(message = "Status are required")
+    @NotNull(message = "Status are required")
     MovieStatusEnum status;
 }

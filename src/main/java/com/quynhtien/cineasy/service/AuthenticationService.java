@@ -132,6 +132,7 @@ public class AuthenticationService {
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
             String newToken = generateToken(user);
             return AuthenticationResponse.builder()
+                    .enabled(user.isEnabled())
                     .token(newToken)
                     .build();
         } catch (ParseException e) {
