@@ -28,8 +28,8 @@
 
 ## 🚀 Getting Started
 
-### Create `.env` file
-Copy the `.env.example` file and fill in your own values to run the project.
+### Create `application.properties` file
+Copy the `application-example.properties` file and fill in your own values to run the project.
 ### Run the project on your IDE
 
 
