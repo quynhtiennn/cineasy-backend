@@ -20,7 +20,8 @@
 - Spring Boot  
 - Spring Security  
 - Hibernate / JPA  
-- PostgreSQL  
+- PostgreSQL
+- Azure Blob Storage  
 - RESTful APIs  
 - Docker (deployed on Render)  
 
